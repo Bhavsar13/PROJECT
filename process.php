@@ -1,4 +1,5 @@
 <?php
+
 require_once("include/initialize.php");
 
 $action = isset($_GET['action']) ? $_GET['action'] : '';
@@ -17,12 +18,9 @@ switch ($action) {
 	doLogin();
 	break; 
 	}
-
-
-
-function doSubmitApplication() { 
-    global $mydb;   
-    $jobid  = $_GET['JOBID'];
+function doSubmitApplication() {
+    global $mydb;
+    $jobid = $_GET['JOBID'];
 
     $autonum = new Autonumber();
     $applicantid = $autonum->set_autonumber('APPLICANT');
@@ -35,23 +33,23 @@ function doSubmitApplication() {
     $video = UploadVideo(); // Upload video
     $videoLocation = "/resume/" . $video;
 
-    if ($picture == "" && $video == "") {
+    if (($picture === false) && ($video === false)) {
         // Handle case where neither resume nor video is uploaded
         redirect(web_root . "index.php?q=apply&job=" . $jobid . "&view=personalinfo");
     } else {
         if (isset($_SESSION['APPLICANTID'])) {
             // Handle resume attachment
-            if ($picture != "") {
+            if ($picture !== false) {
                 $sql = "INSERT INTO `tblattachmentfile` (FILEID, `USERATTACHMENTID`, `FILE_NAME`, `FILE_LOCATION`, `JOBID`) 
                         VALUES ('" . date('Y') . $fileid->AUTO . "', '{$_SESSION['APPLICANTID']}', 'Resume', '{$location}', '{$jobid}')";
                 $mydb->setQuery($sql);
                 $res = $mydb->executeQuery();
 
-                doUpdate($jobid, $fileid->AUTO, $location);
+                doUpdate($jobid, $fileid->AUTO);
             }
-            
+
             // Handle video attachment
-            if ($video != "") {
+            if ($video !== false) {
                 $sql = "INSERT INTO `tblattachmentfile` (FILEID, `USERATTACHMENTID`, `FILE_NAME`, `VIDEO_LOCATION`, `JOBID`) 
                         VALUES ('" . date('Y') . $fileid->AUTO . "', '{$_SESSION['APPLICANTID']}', 'Video', '{$videoLocation}', '{$jobid}')";
                 $mydb->setQuery($sql);
@@ -59,7 +57,7 @@ function doSubmitApplication() {
             }
         } else {
             // Handle resume attachment
-            if ($picture != "") {
+            if ($picture !== false) {
                 $sql = "INSERT INTO `tblattachmentfile` (FILEID, `USERATTACHMENTID`, `FILE_NAME`, `FILE_LOCATION`, `JOBID`) 
                         VALUES ('" . date('Y') . $fileid->AUTO . "', '" . date('Y') . $applicantid->AUTO . "', 'Resume', '{$location}', '{$jobid}')";
                 $mydb->setQuery($sql);
@@ -70,9 +68,9 @@ function doSubmitApplication() {
                 $autonum = new Autonumber();
                 $autonum->auto_update('APPLICANT');
             }
-            
+
             // Handle video attachment
-            if ($video != "") {
+            if ($video !== false) {
                 $sql = "INSERT INTO `tblattachmentfile` (FILEID, `USERATTACHMENTID`, `FILE_NAME`, `VIDEO_LOCATION`, `JOBID`) 
                         VALUES ('" . date('Y') . $fileid->AUTO . "', '" . date('Y') . $applicantid->AUTO . "', 'Video', '{$videoLocation}', '{$jobid}')";
                 $mydb->setQuery($sql);
@@ -82,8 +80,12 @@ function doSubmitApplication() {
     }
 
     $autonum = new Autonumber();
-    $autonum->auto_update('FILEID'); 
+    $autonum->auto_update('FILEID');
 }
+
+
+
+
 function doInsert($jobid=0,$fileid=0) {
 	if (isset($_POST['submit'])) {  
 	global $mydb; 
@@ -139,7 +141,7 @@ function doInsert($jobid=0,$fileid=0) {
 			$jobreg->create();
   
 
-			message("Your application already submitted. Please wait for the company confirmation if your are qualified to this job.","success");
+			message("Your application has been successfully submitted. Please await a response from the hosting company to determine your suitability for the role.","success");
 			redirect("index.php?q=success&job=".$result->JOBID);
 
 			
@@ -172,7 +174,7 @@ function doUpdate($jobid=0,$fileid=0) {
 			$jobreg->create();
 
   
-			message("Your application already submitted. Please wait for the company confirmation if your are qualified to this job.","success");
+			message("Your application has been successfully submitted. Please await a response from the hosting company to determine your suitability for the role.","success");
 			redirect("index.php?q=success&job=".$result->JOBID);
  
 	}
@@ -279,31 +281,33 @@ function UploadFile($jobid = 0) {
     }
 }
 function UploadVideo($jobid = 0) {
-    $target_dir = $_SERVER['DOCUMENT_ROOT'] . "/PROJECT/resume/"; // Set your video upload directory
-    $target_file = $target_dir . date("dmYhis") . basename($_FILES["video"]["name"]);
-    $uploadOk = 1;
-    $videoFileType = pathinfo($target_file, PATHINFO_EXTENSION);
+$target_dir = $_SERVER['DOCUMENT_ROOT'] . "/PROJECT/resume/"; // Set your video upload directory
+$target_file = $target_dir . date("dmYhis") . basename($_FILES["video"]["name"]);
+$uploadOk = 1;
+$videoFileType = pathinfo($target_file, PATHINFO_EXTENSION);
 
-    // Check if the file type is allowed (you can add more video formats if needed)
-    if ($videoFileType != "mp4" && $videoFileType != "avi" && $videoFileType != "mov") {
-        // Display an error message and return false
-        message("Video format not supported. Only MP4, AVI, and MOV files are allowed.", "error");
-        return false;
-    }
+// Define an array of allowed video formats
+$allowedFormats = array("mp4", "avi", "mov");
 
-    // Log details about the move_uploaded_file operation
-    error_log("Moving uploaded video: " . $_FILES["video"]["tmp_name"] . " to " . $target_file);
-
-    // Move the uploaded video
-    if (move_uploaded_file($_FILES["video"]["tmp_name"], $target_file)) {
-        return date("dmYhis") . basename($_FILES["video"]["name"]);
-    } else {
-        // Display the actual error message
-        $errorMessage = error_get_last()['message'];
-        message("Error uploading video: " . $errorMessage, "error");
-        return false;
-    }
+// Check if the file type is allowed
+if (!in_array(strtolower($videoFileType), $allowedFormats)) {
+// Display an error message and return false
+message("Video format not supported. Allowed formats: MP4, AVI, MOV.", "error");
+return false;
 }
 
+// Log details about the move_uploaded_file operation
+error_log("Moving uploaded video: " . $_FILES["video"]["tmp_name"] . " to " . $target_file);
+
+// Move the uploaded video
+if (move_uploaded_file($_FILES["video"]["tmp_name"], $target_file)) {
+return date("dmYhis") . basename($_FILES["video"]["name"]);
+} else {
+// Display the actual error message
+$errorMessage = error_get_last()['message'];
+message("Error uploading video: " . $errorMessage, "error");
+return false;
+}
+}
 
 ?>
