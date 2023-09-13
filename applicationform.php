@@ -69,48 +69,29 @@ if (isset($_SESSION['APPLICANTID'])) {
 
             </div>
         </div>
-        <form class="form-horizontal span6 " action="process.php?action=submitapplication&JOBID=<?php echo $result->JOBID; ?>" enctype="multipart/form-data" method="POST">
+        <form class="form-horizontal span6" action="process.php?action=submitapplication&JOBID=<?php echo $result->JOBID; ?>" enctype="multipart/form-data" method="POST">
             <div class="col-sm-12">
                 <div class="row">
                     <div class="panel panel-default">
                         <div class="panel-header">
-                            <div style="border-bottom: 1px solid #ddd;padding: 10px;font-size: 25px;font-weight: bold;color: #000;margin-bottom: 5px;">Attach your Resume here.
+                            <div style="border-bottom: 1px solid #ddd;padding: 10px;font-size: 25px;font-weight: bold;color: #000;margin-bottom: 5px;">Attach your Resume and Video here.
                                 <input name="JOBID" type="hidden" value="<?php echo $_GET['job'];?>">
                             </div>
                         </div>
                         <div class="panel-body">
                             <div class="form-group">
                                 <label class="col-md-2" for="picture" style="padding: 0;margin: 0;">Resume File:</label>
-                                <div class="col-md-10" style="padding: 0;margin: 0;">
-                                    <input id="picture" name="picture" type="file" accept=".doc, .docx, .pdf">
-
-                                    <input name="MAX_FILE_SIZE" type="hidden" value="1000000">
+                                <div class="col-md-4" style="padding: 0;margin: 0;">
+                                    <input id="picture" name="picture" type="file" accept=".doc, .docx, .pdf" required>
+                                    <input name="MAX_FILE_SIZE" type="hidden" value="10485760"> <!-- Set your desired resume file size limit in bytes (10MB) -->
                                 </div>
-                            </div>
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-12">
-                <div class="row">
-                    <div class="panel panel-default">
-                        <div class="panel-header">
-                            <div style="border-bottom: 1px solid #ddd;padding: 10px;font-size: 25px;font-weight: bold;color: #000;margin-bottom: 5px;">Attach your Video here.
-                                <input name="JOBID" type="hidden" value="<?php echo $_GET['job'];?>">
-                            </div>
-                        </div>
-                        <div class="panel-body">
-                            <div class="form-group">
                                 <label class="col-md-2" for="video" style="padding: 0;margin: 0;">Video File:</label>
-                                <div class="col-md-10" style="padding: 0;margin: 0;">
-                                    <input id="video" name="video" type="file" accept=".mp4, .avi, .mov">
-
-                                    <input name="MAX_VIDEO_SIZE" type="hidden" value="100000000"> <!-- Set your desired video file size limit in bytes -->
+                                <div class="col-md-4" style="padding: 0;margin: 0;">
+                                    <input id="video" name="video" type="file" accept=".mp4, .avi, .mov" required>
+                                    <input name="MAX_VIDEO_SIZE" type="hidden" value="26214400"> <!-- Set your desired video file size limit in bytes (25MB) -->
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </div>
@@ -122,11 +103,13 @@ if (isset($_SESSION['APPLICANTID'])) {
                 </div>
             </div>
         </form>
+
+
         <?php }else{ ?>
         <form class="form-horizontal span6  wow fadeInDown" action="process.php?action=submitapplication&JOBID=<?php echo $result->JOBID; ?>" enctype="multipart/form-data" method="POST">
             <div class="col-sm-8">
                 <div class="row">
-                    <h2 class=" ">Personal Info</h2>
+                    <!--<h2 class=" ">Personal Info</h2>-->
                     <?php require_once('applicantform.php') ?>
                 </div>
             </div>
@@ -179,7 +162,7 @@ if (isset($_SESSION['APPLICANTID'])) {
 
                 </div>
             </div>
-            <div class="col-sm-12">
+            <!--   <div class="col-sm-12">
                 <div class="row">
                     <div class="panel panel-default">
                         <div class="panel-header">
@@ -201,8 +184,40 @@ if (isset($_SESSION['APPLICANTID'])) {
                     <button class="btn btn-primary btn-sm pull-right" name="submit" type="submit">Submit <span class="fa fa-arrow-right"></span></button>
                     <a href="index.php" class="btn btn-info"><span class="fa fa-arrow-left"></span>&nbsp;<strong>Back</strong></a>
                 </div>
-            </div>
+            </div> -->
         </form>
         <?php } ?>
     </div>
 </section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const videoInput = document.getElementById("video");
+        const resumeInput = document.getElementById("picture");
+        const maxVideoSize = 25000000; // 25 MB in bytes
+        const maxResumeSize = 10000000; // 10 MB in bytes
+
+        videoInput.addEventListener("change", function() {
+            const selectedFile = this.files[0];
+
+            if (selectedFile) {
+                if (selectedFile.size > maxVideoSize) {
+                    alert("The selected video file exceeds the maximum allowed size of 25 MB.");
+                    this.value = ""; // Clear the input field
+                }
+            }
+        });
+
+        resumeInput.addEventListener("change", function() {
+            const selectedFile = this.files[0];
+
+            if (selectedFile) {
+                if (selectedFile.size > maxResumeSize) {
+                    alert("The selected resume file exceeds the maximum allowed size of 10 MB.");
+                    this.value = ""; // Clear the input field
+                }
+            }
+        });
+    });
+
+</script>
