@@ -159,18 +159,18 @@
                             <i class="fa fa-list"></i> <span>Category</span>
                         </a>
                     </li>
-
+                                         <li class="<?php echo (currentpage() == 'vacancy') ? "active" : false;?>">
+                        <a href="<?php echo web_root ;?>admin/vacancy/">
+                            <i class="fa fa-suitcase"></i> <span>Vacancy</span>
+                        </a>
+                    </li>
                     <!--   <li class="<?php echo (currentpage() == 'company') ? "active" : false;?>">
                         <a href="<?php echo web_root ;?>admin/company/">
                             <i class="fa fa-building"></i> <span>Company</span>
                         </a>
                     </li> -->
-                    <!-- <li class="<?php echo (currentpage() == 'vacancy') ? "active" : false;?>">
-                        <a href="<?php echo web_root ;?>admin/vacancy/">
-                            <i class="fa fa-suitcase"></i> <span>Vacancy</span>
-                        </a>
-                    </li>
-                    <li class="<?php echo (currentpage() == 'employee') ? "active" : false;?>">
+
+                  <!--  <li class="<?php echo (currentpage() == 'employee') ? "active" : false;?>">
                         <a href="<?php echo web_root ;?>admin/employee/">
                             <i class="fa fa-users"></i> <span>Employee</span>
                         </a>
