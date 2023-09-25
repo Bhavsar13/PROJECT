@@ -29,7 +29,7 @@ global $mydb;
     .content-header {
         min-height: 50px;
         border-bottom: 1px solid #ddd;
-        font-size: 20px;
+        font-size: 15px;
         font-weight: bold;
     }
 
@@ -71,9 +71,11 @@ global $mydb;
 </style>
 <form action="controller.php?action=approve" method="POST">
     <div class="col-sm-12 content-header" style="">View Details</div>
-    <div class="col-sm-12 content-body">
+    <div class="col-sm-6 content-body">
+        <p>Internship Details</p>
         <h3><?php echo $job->OCCUPATIONTITLE; ?></h3>
         <input type="hidden" name="JOBREGID" value="<?php echo $jobreg->REGISTRATIONID;?>">
+        <input type="hidden" name="APPLICANTID" value="<?php echo $appl->APPLICANTID;?>">
 
         <div class="col-sm-6">
             <ul>
@@ -97,13 +99,28 @@ global $mydb;
             <p style="margin-left: 15px;">@ <?php echo $comp->COMPANYADDRESS ; ?></p>
         </div>
     </div>
+    <div class="col-sm-6 content-body">
+        <p>Applicant Infomation</p>
+        <h3> <?php echo $appl->LNAME. ', ' .$appl->FNAME . ' ' . $appl->MNAME;?></h3>
+        <ul>
+            <li>Address : <?php echo $appl->ADDRESS; ?></li>
+            <li>Contact No. : <?php echo $appl->CONTACTNO;?></li>
+            <li>Email Address. : <?php echo $appl->EMAILADDRESS;?></li>
+            <li>Sex: <?php echo $appl->SEX;?></li>
+            <li>Age : <?php echo $appl->AGE;?></li>
+        </ul>
+        <div class="col-sm-12">
+            <p>Work Experience: </p>
+            <p style="margin-left: 15px;"><?php echo $appl->DEGREE;?></p>
+        </div>
 
+
+    </div>
     <div class="col-sm-12 content-footer">
         <p><i class="fa fa-paperclip"></i> Attachment Files</p>
         <div class="col-sm-12 slider">
             <h3>Download Resume <a href="<?php echo web_root.'/'.$attachmentfile->FILE_LOCATION; ?>">Here</a></h3>
         </div>
-        <!-- Header for Download Video Introduction -->
         <div class="col-sm-12">
             <h3>Video Introduction</h3>
             <?php
@@ -125,10 +142,10 @@ global $mydb;
         </div>
         <div class="col-sm-12">
             <p>Feedback</p>
-            <p><?php echo isset($jobreg->REMARKS) ? $jobreg->REMARKS : ""; ?></p>
+            <textarea class="input-group" name="REMARKS"><?php echo isset($jobreg->REMARKS) ? $jobreg->REMARKS : ""; ?></textarea>
         </div>
         <div class="col-sm-12  submitbutton ">
-            <a href="index.php?view=appliedjobs" class="btn btn-primary fa fa-arrow-left">Back</a>
+            <button type="submit" name="submit" class="btn btn-primary">Send</button>
         </div>
     </div>
 </form>

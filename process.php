@@ -18,65 +18,41 @@ switch ($action) {
 	doLogin();
 	break; 
 	}
+
 function doSubmitApplication() {
     global $mydb;
-    $jobid = $_GET['JOBID'];
+    $jobid = isset($_GET['JOBID']) ? $_GET['JOBID'] : '';
 
-    $autonum = new Autonumber();
-    $applicantid = $autonum->set_autonumber('APPLICANT');
-    $autonum = new Autonumber();
-    $fileid = $autonum->set_autonumber('FILEID');
+    if (empty($jobid)) {
+        // Handle the case where 'JOBID' is not set appropriately
+        redirect(web_root . "index.php?q=apply");
+        return;
+    }
 
-    $picture = UploadFile(); // Upload resume
-    $location = "/resume/" . $picture;
+    // Check if 'APPLICANTID' is set in the session
+    if (isset($_SESSION['APPLICANTID'])) {
+        // 'APPLICANTID' is set in the session, handle accordingly
+        $applicantid = $_SESSION['APPLICANTID'];
 
-    $video = UploadVideo(); // Upload video
-    $videoLocation = "/resume/" . $video;
+        $autonum = new Autonumber();
+        $fileid = $autonum->set_autonumber('FILEID');
 
-    if (($picture === false) && ($video === false)) {
-        // Handle case where neither resume nor video is uploaded
-        redirect(web_root . "index.php?q=apply&job=" . $jobid . "&view=personalinfo");
-    } else {
-        if (isset($_SESSION['APPLICANTID'])) {
-            // Handle resume attachment
-            if ($picture !== false) {
-                $sql = "INSERT INTO `tblattachmentfile` (FILEID, `USERATTACHMENTID`, `FILE_NAME`, `FILE_LOCATION`, `JOBID`) 
-                        VALUES ('" . date('Y') . $fileid->AUTO . "', '{$_SESSION['APPLICANTID']}', 'Resume', '{$location}', '{$jobid}')";
-                $mydb->setQuery($sql);
-                $res = $mydb->executeQuery();
+        $picture = UploadFile(); // Upload resume
+        $location = "/resume/" . $picture;
 
-                doUpdate($jobid, $fileid->AUTO);
-            }
+        $video = UploadVideo(); // Upload video
+        $videoLocation = "/resume/" . $video;
 
-            // Handle video attachment
-            if ($video !== false) {
-                $sql = "INSERT INTO `tblattachmentfile` (FILEID, `USERATTACHMENTID`, `FILE_NAME`, `VIDEO_LOCATION`, `JOBID`) 
-                        VALUES ('" . date('Y') . $fileid->AUTO . "', '{$_SESSION['APPLICANTID']}', 'Video', '{$videoLocation}', '{$jobid}')";
-                $mydb->setQuery($sql);
-                $res = $mydb->executeQuery();
-            }
+        if (($picture === false) && ($video === false)) {
+            // Handle case where neither resume nor video is uploaded
+            redirect(web_root . "index.php?q=apply&job=" . $jobid . "&view=personalinfo");
         } else {
-            // Handle resume attachment
-            if ($picture !== false) {
-                $sql = "INSERT INTO `tblattachmentfile` (FILEID, `USERATTACHMENTID`, `FILE_NAME`, `FILE_LOCATION`, `JOBID`) 
-                        VALUES ('" . date('Y') . $fileid->AUTO . "', '" . date('Y') . $applicantid->AUTO . "', 'Resume', '{$location}', '{$jobid}')";
-                $mydb->setQuery($sql);
-                $res = $mydb->executeQuery();
-
-                doInsert($jobid, $fileid->AUTO, $location);
-
-                $autonum = new Autonumber();
-                $autonum->auto_update('APPLICANT');
-            }
-
-            // Handle video attachment
-            if ($video !== false) {
-                $sql = "INSERT INTO `tblattachmentfile` (FILEID, `USERATTACHMENTID`, `FILE_NAME`, `VIDEO_LOCATION`, `JOBID`) 
-                        VALUES ('" . date('Y') . $fileid->AUTO . "', '" . date('Y') . $applicantid->AUTO . "', 'Video', '{$videoLocation}', '{$jobid}')";
-                $mydb->setQuery($sql);
-                $res = $mydb->executeQuery();
-            }
+            // Handle both resume and video attachments in a single database entry
+            insertFileIntoDatabase($fileid->AUTO, 'DOCUMENT', $location, $videoLocation, $jobid, $applicantid);
+            doUpdate($jobid, $fileid->AUTO);
         }
+
+        // Continue with any other actions specific to a logged-in applicant
     }
 
     $autonum = new Autonumber();
@@ -84,70 +60,74 @@ function doSubmitApplication() {
 }
 
 
+function insertFileIntoDatabase($fileid, $fileType, $fileLocation, $videoLocation, $jobid, $applicantid) {
+    global $mydb;
+
+    // Combine the FILE_NAME for both resume and video into 'DOCUMENT'
+    $fileType = 'DOCUMENT';
+
+    $sql = "INSERT INTO `tblattachmentfile` (FILEID, `USERATTACHMENTID`, `FILE_NAME`, `FILE_LOCATION`, `VIDEO_LOCATION`, `JOBID`)
+            VALUES ('" . date('Y') . $fileid . "', '{$applicantid}', '{$fileType}', '{$fileLocation}', '{$videoLocation}', '{$jobid}')";
+    $mydb->setQuery($sql);
+    $res = $mydb->executeQuery();
+}
 
 
 function doInsert($jobid=0,$fileid=0) {
-	if (isset($_POST['submit'])) {  
-	global $mydb; 
+if (isset($_POST['submit'])) {
+global $mydb;
 
-        $birthdate =  $_POST['year'].'-'.$_POST['month'].'-'.$_POST['day'];
+$birthdate = $_POST['year'].'-'.$_POST['month'].'-'.$_POST['day'];
 
-			$age = date_diff(date_create($birthdate),date_create('today'))->y;
+$age = date_diff(date_create($birthdate),date_create('today'))->y;
 
-			if ($age < 20){
-			message("Invalid age. 20 years old and above is allowed.", "error");
-			redirect("index.php?q=register");
+if ($age < 20){ message("Invalid age. 20 years old and above is allowed.", "error" ); redirect("index.php?q=register"); }else{ $autonum=New Autonumber(); $auto=$autonum->set_autonumber('APPLICANT');
 
-			}else{
-
-			$autonum = New Autonumber();
-			$auto = $autonum->set_autonumber('APPLICANT');
-			 
-			$applicant =New Applicants();
-			$applicant->APPLICANTID = date('Y').$auto->AUTO;
-			$applicant->FNAME = $_POST['FNAME'];
-			$applicant->LNAME = $_POST['LNAME'];
-			$applicant->MNAME = $_POST['MNAME'];
-			$applicant->ADDRESS = $_POST['ADDRESS'];
-			$applicant->SEX = $_POST['optionsRadios'];
-			$applicant->CIVILSTATUS = $_POST['CIVILSTATUS'];
-			$applicant->BIRTHDATE = $birthdate;
-			$applicant->BIRTHPLACE = $_POST['BIRTHPLACE'];
-			$applicant->AGE = $age;
-			$applicant->USERNAME = $_POST['USERNAME'];
-			$applicant->PASS = sha1($_POST['PASS']);
-			$applicant->EMAILADDRESS = $_POST['EMAILADDRESS'];
-			$applicant->CONTACTNO = $_POST['TELNO'];
-			$applicant->DEGREE = $_POST['DEGREE'];
-			$applicant->create();
+    $applicant =New Applicants();
+    $applicant->APPLICANTID = date('Y').$auto->AUTO;
+    $applicant->FNAME = $_POST['FNAME'];
+    $applicant->LNAME = $_POST['LNAME'];
+    $applicant->MNAME = $_POST['MNAME'];
+    $applicant->ADDRESS = $_POST['ADDRESS'];
+    $applicant->SEX = $_POST['optionsRadios'];
+    $applicant->CIVILSTATUS = $_POST['CIVILSTATUS'];
+    $applicant->BIRTHDATE = $birthdate;
+    $applicant->BIRTHPLACE = $_POST['BIRTHPLACE'];
+    $applicant->AGE = $age;
+    $applicant->USERNAME = $_POST['USERNAME'];
+    $applicant->PASS = sha1($_POST['PASS']);
+    $applicant->EMAILADDRESS = $_POST['EMAILADDRESS'];
+    $applicant->CONTACTNO = $_POST['TELNO'];
+    $applicant->DEGREE = $_POST['DEGREE'];
+    $applicant->create();
 
 
 
 
-			$sql = "SELECT * FROM `tblcompany` c,`tbljob` j WHERE c.`COMPANYID`=j.`COMPANYID` AND JOBID = '{$jobid}'" ;
-			$mydb->setQuery($sql);
-			$result = $mydb->loadSingleResult();
+    $sql = "SELECT * FROM `tblcompany` c,`tbljob` j WHERE c.`COMPANYID`=j.`COMPANYID` AND JOBID = '{$jobid}'" ;
+    $mydb->setQuery($sql);
+    $result = $mydb->loadSingleResult();
 
 
-			$jobreg = New JobRegistration(); 
-			$jobreg->COMPANYID = $result->COMPANYID;
-			$jobreg->JOBID     = $result->JOBID;
-			$jobreg->APPLICANTID = date('Y').$auto->AUTO;
-			$jobreg->APPLICANT   = $_POST['FNAME'] . ' ' . $_POST['LNAME'];
-			$jobreg->REGISTRATIONDATE = date('Y-m-d');
-			$jobreg->FILEID = date('Y').$fileid;
-			$jobreg->REMARKS = 'Pending';
-			$jobreg->DATETIMEAPPROVED = date('Y-m-d H:i');
-			$jobreg->create();
-  
+    $jobreg = New JobRegistration();
+    $jobreg->COMPANYID = $result->COMPANYID;
+    $jobreg->JOBID = $result->JOBID;
+    $jobreg->APPLICANTID = date('Y').$auto->AUTO;
+    $jobreg->APPLICANT = $_POST['FNAME'] . ' ' . $_POST['LNAME'];
+    $jobreg->REGISTRATIONDATE = date('Y-m-d');
+    $jobreg->FILEID = date('Y').$fileid;
+    $jobreg->REMARKS = 'Pending';
+    $jobreg->DATETIMEAPPROVED = date('Y-m-d H:i');
+    $jobreg->create();
 
-			message("Your application has been successfully submitted. Please await a response from the hosting company to determine your suitability for the role.","success");
-			redirect("index.php?q=success&job=".$result->JOBID);
 
-			
-	 }
-}
-}
+    message("Your application has been successfully submitted. Please await a response from the hosting company to determine your suitability for the role.","success");
+    redirect("index.php?q=success&job=".$result->JOBID);
+
+
+    }
+    }
+    }
 function doUpdate($jobid=0,$fileid=0) {
 	if (isset($_POST['submit'])) {
 	global $mydb;   

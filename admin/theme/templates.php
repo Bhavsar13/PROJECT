@@ -79,14 +79,14 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
-                                <!--  <li class="user-header">
+                                <li class="user-header">
                                     <img data-target="#menuModal" data-toggle="modal" src="<?php echo web_root.'admin/user/'. $singleuser->PICLOCATION;?>" class="img-circle" alt="User Image" />
-                                </li> -->
+                                </li>
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
-                                    <!--  <div class="pull-left">
+                                    <div class="pull-left">
                                         <a href="<?php echo web_root.'admin/user/index.php?view=view&id='.$_SESSION['ADMIN_USERID'] ;?>" class="btn btn-default btn-flat">Profile</a>
-                                    </div> -->
+                                    </div>
                                     <div class="pull-right">
                                         <a href="<?php echo web_root ;?>admin/logout.php" class="btn btn-default btn-flat">Sign out</a>
                                     </div>
@@ -99,8 +99,6 @@
                 </div>
             </nav>
         </header>
-
-
 
         <div class="modal fade" id="menuModal" tabindex="-1">
             <div class="modal-dialog">
@@ -159,18 +157,20 @@
                             <i class="fa fa-list"></i> <span>Category</span>
                         </a>
                     </li>
-                                         <li class="<?php echo (currentpage() == 'vacancy') ? "active" : false;?>">
+
+                    <?php if ($singleuser->ROLE === 'Administrator') { ?>
+                    <li class="<?php echo (currentpage() == 'company') ? "active" : false;?>">
+                        <a href="<?php echo web_root ;?>admin/company/">
+                            <i class="fa fa-building"></i> <span>Company</span>
+                        </a>
+                    </li>
+                    <?php } ?>
+                    <li class="<?php echo (currentpage() == 'vacancy') ? "active" : false;?>">
                         <a href="<?php echo web_root ;?>admin/vacancy/">
                             <i class="fa fa-suitcase"></i> <span>Vacancy</span>
                         </a>
                     </li>
-                    <!--   <li class="<?php echo (currentpage() == 'company') ? "active" : false;?>">
-                        <a href="<?php echo web_root ;?>admin/company/">
-                            <i class="fa fa-building"></i> <span>Company</span>
-                        </a>
-                    </li> -->
-
-                  <!--  <li class="<?php echo (currentpage() == 'employee') ? "active" : false;?>">
+                    <li class="<?php echo (currentpage() == 'employee') ? "active" : false;?>">
                         <a href="<?php echo web_root ;?>admin/employee/">
                             <i class="fa fa-users"></i> <span>Employee</span>
                         </a>
@@ -188,11 +188,13 @@
                             </span>
                         </a>
                     </li>
+                    <?php if ($singleuser->ROLE === 'Administrator') { ?>
                     <li class="<?php echo (currentpage() == 'applicants') ? "active" : false;?>">
                         <a href="<?php echo web_root ;?>admin/applicantsmanager/">
                             <i class="fa fa-users"></i> <span>Applicant Manager</span>
                         </a>
-                    </li> -->
+                    </li>
+                    <?php } ?>
                     <!--  <li class="treeview">
           <a href="#">
             <i class="fa fa-laptop"></i>
@@ -209,10 +211,13 @@
           </ul>
         </li> -->
 
-                    <!-- <li class="<?php echo (currentpage() == 'user') ? "active" : false;?>">
+                    <?php if ($singleuser->ROLE === 'Administrator') { ?>
+                    <li class="<?php echo (currentpage() == 'user') ? "active" : false;?>">
                         <a href="<?php echo web_root; ?>admin/user/">
-                            <i class="fa fa-user"></i> <span>Manage Users</span> </a>
-                    </li> -->
+                            <i class="fa fa-user"></i> <span>Manage Users</span>
+                        </a>
+                    </li>
+                    <?php } ?>
 
                 </ul>
             </section>

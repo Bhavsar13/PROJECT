@@ -5,7 +5,7 @@
 ?>
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">List of Vacancies <a href="index.php?view=add" class="btn btn-primary btn-xs  "> <i class="fa fa-plus-circle fw-fa"></i> Add Job Vacancy</a> </h1>
+        <h1 class="page-header">List of Vacancies <a href="index.php?view=add" class="btn btn-primary btn-xs  "> <i class="fa fa-plus-circle fw-fa"></i> Add Internship Vacancy</a> </h1>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -19,14 +19,14 @@
                     <!-- <th>No.</th> -->
                     <th>Company Name</th>
                     <th>Occupation Title</th>
-                    <th>Require no. of Interns</th>
+                    <th>Require no. of Employees</th>
                     <th>Salaries</th>
                     <th>Duration of Employment</th>
                     <th>Qualification/Work experience</th>
-                    <th>InternshipDescription</th>
-                    <th>Prefered Sex</th>
-                    <th>Sector of Vacancy</th>
-                    <th>Status</th>
+                    <th>Internship Description</th>
+
+
+
                     <th width="10%" align="center">Action</th>
                 </tr>
             </thead>
@@ -48,9 +48,9 @@
 				  			echo '<td>' . $result->DURATION_EMPLOYEMENT.'</td>';
 				  			echo '<td>' . $result->QUALIFICATION_WORKEXPERIENCE.'</td>';
 				  			echo '<td>' . $result->JOBDESCRIPTION.'</td>';
-				  			echo '<td>' . $result->PREFEREDSEX.'</td>';
-				  			echo '<td>' . $result->SECTOR_VACANCY.'</td>';
-				  			echo '<td>' . $result->JOBSTATUS.'</td>';
+				  			
+				  			
+
 				  		echo '<td align="center"><a title="Edit" href="index.php?view=edit&id='.$result->JOBID.'" class="btn btn-primary btn-xs  ">  <span class="fa fa-edit fw-fa"></a>
 				  		     <a title="Delete" href="controller.php?action=delete&id='.$result->JOBID.'" class="btn btn-danger btn-xs  ">  <span class="fa  fa-trash-o fw-fa "></a></td>';
 				  		// echo '<td></td>';
