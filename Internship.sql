@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 25, 2023 at 12:21 AM
+-- Generation Time: Sep 28, 2023 at 03:42 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.4.28
 
@@ -43,19 +43,23 @@ CREATE TABLE `tblapplicants` (
   `AGE` int(11) DEFAULT 0,
   `CONTACTNO` varchar(20) DEFAULT '',
   `DEGREE` varchar(255) DEFAULT 'Not Specified',
-  `APPLICANTPHOTO` varchar(255) DEFAULT 'default_photo.jpg'
+  `APPLICANTPHOTO` varchar(255) DEFAULT 'default_photo.jpg',
+  `EMAIL_VERIFIED` tinyint(1) DEFAULT 0,
+  `EMAIL_VERIFICATION_TOKEN` varchar(255) DEFAULT NULL,
+  `EMAIL_VERIFICATION_CODE` varchar(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tblapplicants`
 --
 
-INSERT INTO `tblapplicants` (`APPLICANTID`, `USERNAME`, `PASS`, `EMAILADDRESS`, `FNAME`, `LNAME`, `MNAME`, `ADDRESS`, `SEX`, `CIVILSTATUS`, `BIRTHDATE`, `BIRTHPLACE`, `AGE`, `CONTACTNO`, `DEGREE`, `APPLICANTPHOTO`) VALUES
-(2023140, 'rozy12', '', 'rozy@gmail.com', 'rozy', 'Bral', 'ss', 'ss', 'FEMALE', 'MARRIED', '1991-04-18', 'saddasdf', 32, '341351535', 'aseraersdf', 'photos/avatar.png'),
-(2023144, 'par', '55abeddc0e1983698e11e47b63ce19d3718f3e35', 'par@gmail.com', 'par', 'par', 'par', 'par', 'FEMALE', 'MARRIED', '1996-02-28', 'par', 27, '131232131', 'par', 'photos/avatar.png'),
-(2023189, 'ABC11', '', 'abc@gmail.com', 'abc', 'c21121', 'abc', 'ssa', 'FEMALE', 'SINGLE', '1998-09-13', 'sdasd', 25, '231233113', 'Notdsadd', 'photos/avatar.png'),
-(2023190, 'veer', '9218562abf2159c2ae93abd35164d1e8a17bd69d', 'veer@gmail.com', 'veer', 'patel', 'v', 'verer', 'FEMALE', 'SINGLE', '1998-09-13', 'asdsad', 25, '213456789', 'Not Specified', 'photos/about.png'),
-(2023194, 'ss', 'a1500ff63cec41d76d631431547c33cfccf6d7a1', 'ss1@gmail.com', 'ss', 'ss', 'ss', 'dsdadasasad', 'FEMALE', NULL, '1998-09-20', 'ssdsd', 25, '323232', 'Not Specifiedsdsds', 'photos/avatar.png');
+INSERT INTO `tblapplicants` (`APPLICANTID`, `USERNAME`, `PASS`, `EMAILADDRESS`, `FNAME`, `LNAME`, `MNAME`, `ADDRESS`, `SEX`, `CIVILSTATUS`, `BIRTHDATE`, `BIRTHPLACE`, `AGE`, `CONTACTNO`, `DEGREE`, `APPLICANTPHOTO`, `EMAIL_VERIFIED`, `EMAIL_VERIFICATION_TOKEN`, `EMAIL_VERIFICATION_CODE`) VALUES
+(2023140, 'rozy12', '', 'rozy@gmail.com', 'rozy', 'Bral', 'ss', 'ss', 'FEMALE', 'MARRIED', '1991-04-18', 'saddasdf', 32, '341351535', 'aseraersdf', 'photos/avatar.png', 0, NULL, ''),
+(2023144, 'par', '55abeddc0e1983698e11e47b63ce19d3718f3e35', 'par@gmail.com', 'par', 'par', 'par', 'par', 'FEMALE', 'MARRIED', '1996-02-28', 'par', 27, '131232131', 'par', 'photos/avatar.png', 0, NULL, ''),
+(2023189, 'ABC11', '', 'abc@gmail.com', 'abc', 'c21121', 'abc', 'ssa', 'FEMALE', 'SINGLE', '1998-09-13', 'sdasd', 25, '231233113', 'Notdsadd', 'photos/avatar.png', 0, NULL, ''),
+(2023190, 'veer', '9218562abf2159c2ae93abd35164d1e8a17bd69d', 'veer@gmail.com', 'veer', 'patel', 'v', 'verer', 'FEMALE', 'SINGLE', '1998-09-13', 'asdsad', 25, '213456789', 'Not Specified', 'photos/about.png', 0, NULL, ''),
+(2023194, 'ss', 'a1500ff63cec41d76d631431547c33cfccf6d7a1', 'ss1@gmail.com', 'ss', 'ss', 'ss', 'dsdadasasad', 'FEMALE', NULL, '1998-09-20', 'ssdsd', 25, '323232', 'Not Specifiedsdsds', 'photos/avatar.png', 0, NULL, ''),
+(20231138, 'sujal', 'beb6f7ab38da544ff1ea46ae248e21a541ebe378', 'sujalbhavsar22@gmail.com', '', '', '', '', 'MALE', NULL, NULL, '', 0, '', 'Not Specified', 'default_photo.jpg', 1, NULL, '130470');
 
 -- --------------------------------------------------------
 
@@ -155,9 +159,9 @@ CREATE TABLE `tblautonumbers` (
 --
 
 INSERT INTO `tblautonumbers` (`AUTOID`, `AUTOSTART`, `AUTOEND`, `AUTOINC`, `AUTOKEY`) VALUES
-(1, 1, 4, 1, 'userid'),
+(1, 1, 5, 1, 'userid'),
 (2, 1, 2, 1, 'employeeid'),
-(3, 1, 95, 1, 'APPLICANT'),
+(3, 1, 139, 1, 'APPLICANT'),
 (4, 1, 163, 1, 'FILEID');
 
 -- --------------------------------------------------------
@@ -181,8 +185,8 @@ INSERT INTO `tblcategory` (`CATEGORYID`, `CATEGORY`) VALUES
 (4, 'IT'),
 (5, 'Civil Engineer'),
 (11, 'Digital Marketing'),
-(17, 'Bank'),
-(18, 'Rece');
+(18, 'Rece'),
+(21, 'Bank');
 
 -- --------------------------------------------------------
 
@@ -244,8 +248,8 @@ CREATE TABLE `tblemployees` (
 --
 
 INSERT INTO `tblemployees` (`INCID`, `EMPLOYEEID`, `FNAME`, `LNAME`, `MNAME`, `ADDRESS`, `BIRTHDATE`, `BIRTHPLACE`, `AGE`, `SEX`, `CIVILSTATUS`, `TELNO`, `EMP_EMAILADDRESS`, `CELLNO`, `POSITION`, `WORKSTATS`, `EMPPHOTO`, `EMPUSERNAME`, `EMPPASSWORD`, `DATEHIRED`, `COMPANYID`) VALUES
-(2, '2', 'vc1', 'vc', 'vc', 'vc', '1997-08-23', 'vc', 26, 'Male', 'Single', '0102030405', 'sujal@gmail.com', 'DefaultValueHere', 'vc', 'DefaultValueHere', 'default_image.jpg', '2', 'da4b9237bacccdf19c0760cab7aec4a8359010b0', '2023-08-31', 1),
-(3, '3', 'cc', 'cc', 'cc', 'cc', '1995-08-23', 'cc', 28, 'Male', 'Single', '1020304050', 'cc@gmail.com', 'DefaultValueHere', 'cc', 'DefaultValueHere', 'default_image.jpg', '3', '77de68daecd823babbb58edb1c8e14d7106e83bb', '2023-08-31', 2);
+(2, '2', 'vc', 'vc', 'vc', 'vc', '1997-08-23', 'vc', 26, 'Male', 'Single', '0102030405', 'sujal@gmail.com', 'DefaultValueHere', 'vc', 'DefaultValueHere', 'default_image.jpg', '2', 'da4b9237bacccdf19c0760cab7aec4a8359010b0', '2023-08-31', 1),
+(3, '3', 'cc', 'cc', 'cc', 'cc1', '1995-08-23', 'cc1', 28, 'Male', 'Single', '10203040232', 'cc@gmail.com', 'DefaultValueHere', 'ccqwq', 'DefaultValueHere', 'default_image.jpg', '3', '77de68daecd823babbb58edb1c8e14d7106e83bb', '2023-08-31', 2);
 
 -- --------------------------------------------------------
 
@@ -267,7 +271,8 @@ CREATE TABLE `tblfeedback` (
 INSERT INTO `tblfeedback` (`FEEDBACKID`, `APPLICANTID`, `REGISTRATIONID`, `FEEDBACK`) VALUES
 (1, 1, 1, 'I\'ve seen your work and it\'s really interesting'),
 (2, 3, 2, 'pending'),
-(3, 2023194, 100, 'Approved');
+(3, 2023194, 100, 'pending'),
+(4, 2023194, 101, 'approved');
 
 -- --------------------------------------------------------
 
@@ -298,11 +303,12 @@ CREATE TABLE `tbljob` (
 INSERT INTO `tbljob` (`JOBID`, `COMPANYID`, `CATEGORY`, `OCCUPATIONTITLE`, `REQ_NO_EMPLOYEES`, `SALARIES`, `DURATION_EMPLOYEMENT`, `QUALIFICATION_WORKEXPERIENCE`, `JOBDESCRIPTION`, `PREFEREDSEX`, `SECTOR_VACANCY`, `DATEPOSTED`, `JOBSTATUS`) VALUES
 (1, 3, 'Technology', 'Accounting', 6, '15000', 'jan 30', 'Two year Experience', 'We are looking for a bachelor of science in information technology.', 'Male/Female', 'yes', '2023-08-20 00:00:00', 'hiring'),
 (3, 3, 'Engineer', 'Engineer', 2, '122000', '3 years', 'ccccccccccc', 'ccccccccccc', 'Male', 'cccccccc', '2023-08-23 15:48:00', 'hiring'),
-(4, 2, 'Technology', 'Engineer', 2, '122000', '3 years', 'sdsad', 'asdsd', 'Male', 'dsds', '2023-09-18 06:59:00', 'hiring'),
-(5, 1, 'IT', 'Engineer', 2, '122000', '3 years', 'dfddssf', 'dsdfsdfs', 'Female', 'dsdsddsds', '2023-09-18 09:09:00', 'hiring'),
+(4, 2, 'Technology', 'Engineer', 111, '122000', '3 year', 'd', 'asdsd', '', '', '2023-09-18 06:59:00', 'hiring'),
+(5, 1, 'IT', 'Engineer', 5, '122000', '3 years', 'dfddssf', 'dsdfsdfs', '', '', '2023-09-18 09:09:00', 'hiring'),
 (6, 1, 'Engineer', 'Engineer', 23, '12121', 'ss', '32323', 'sdasdasd', 'Male/Female', 'dssdd', '2023-09-18 12:20:00', 'hiring'),
 (7, 2, 'Engineer', 'Engineer', 23, 'No salary', '20 months', 'Masters of Technology', 'We are looking for a Master of technology in information technology.', 'Male/Female', 'Yes', '2023-09-24 00:44:00', 'hiring'),
-(8, 6, 'Digital', 'Accounting', 2, '122000', '3 years', 'sds', 'dadasd', 'None', '', '2023-09-25 00:19:00', 'hiring');
+(8, 6, 'Digital', 'Accounting', 2, '122000', '3 years', 'sds', 'dadasd', 'None', '', '2023-09-25 00:19:00', 'hiring'),
+(9, 2, 'Engineer', 'Engineer', 23, 'No salary', '20 months', 'sdasda', 'asdasdas', '', '', '2023-09-27 07:27:00', 'hiring');
 
 -- --------------------------------------------------------
 
@@ -423,8 +429,8 @@ INSERT INTO `tbljobregistration` (`REGISTRATIONID`, `COMPANYID`, `JOBID`, `APPLI
 (97, 1, 5, 2023144, 'par par', '2023-09-21', 'Pending', '20231159', 1, 1, '2023-09-21 12:58:00'),
 (98, 2, 4, 2023144, 'par par', '2023-09-21', 'Pending', '20231160', 1, 1, '2023-09-21 12:59:00'),
 (99, 3, 3, 2023144, 'par par', '2023-09-21', 'Pending', '20231160', 1, 1, '2023-09-21 13:03:00'),
-(100, 1, 6, 2023194, 'ss ss', '2023-09-24', 'Approved', '20231161', 0, 1, '2023-09-24 08:36:28'),
-(101, 1, 5, 2023194, 'ss ss', '2023-09-24', 'Pending', '20231162', 1, 1, '2023-09-24 00:56:00');
+(100, 1, 6, 2023194, 'ss ss', '2023-09-24', 'pending', '20231161', 0, 1, '2023-09-28 09:57:44'),
+(101, 1, 5, 2023194, 'ss ss', '2023-09-24', 'approved', '20231162', 0, 1, '2023-09-25 10:16:09');
 
 -- --------------------------------------------------------
 
@@ -438,17 +444,33 @@ CREATE TABLE `tblusers` (
   `USERNAME` varchar(90) NOT NULL,
   `PASS` varchar(90) NOT NULL,
   `ROLE` varchar(30) NOT NULL,
-  `PICLOCATION` varchar(255) DEFAULT NULL
+  `PICLOCATION` varchar(255) DEFAULT NULL,
+  `COMPANYID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tblusers`
 --
 
-INSERT INTO `tblusers` (`USERID`, `FULLNAME`, `USERNAME`, `PASS`, `ROLE`, `PICLOCATION`) VALUES
-('0001', 'Sujal', 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 'Administrator', 'photos/avatar.png'),
-('2018001', 'rozy', 'rozy', '76544739cb201dd0fbe9b491f4b7c84e76544db0', 'Administrator', ''),
-('3', 'vc', 'vc', '3a6f049c78ad5ca836eee0f6bc3ab823d4938963', 'Staff', 'photos/avatar.png');
+INSERT INTO `tblusers` (`USERID`, `FULLNAME`, `USERNAME`, `PASS`, `ROLE`, `PICLOCATION`, `COMPANYID`) VALUES
+('0001', 'Sujal', 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 'Administrator', 'photos/avatar.png', NULL),
+('14', 'bob', 'bob', 'e17d441439027eafbb30fdcc4e548c877ae933d2', 'Staff', NULL, 3),
+('2', 'vc vc', 'vc', 'da4b9237bacccdf19c0760cab7aec4a8359010b0', 'Employee', NULL, NULL),
+('2018001', 'rozy', 'rozy', '76544739cb201dd0fbe9b491f4b7c84e76544db0', 'Administrator', '', NULL),
+('3', 'vc', 'vc', '3a6f049c78ad5ca836eee0f6bc3ab823d4938963', 'Staff', 'photos/avatar.png', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_tracking_events`
+--
+
+CREATE TABLE `tbl_tracking_events` (
+  `event_id` int(11) NOT NULL,
+  `event_name` varchar(255) NOT NULL,
+  `event_timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `event_data` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Indexes for dumped tables
@@ -515,7 +537,14 @@ ALTER TABLE `tbljobregistration`
 -- Indexes for table `tblusers`
 --
 ALTER TABLE `tblusers`
-  ADD PRIMARY KEY (`USERID`);
+  ADD PRIMARY KEY (`USERID`),
+  ADD KEY `fk_company_user` (`COMPANYID`);
+
+--
+-- Indexes for table `tbl_tracking_events`
+--
+ALTER TABLE `tbl_tracking_events`
+  ADD PRIMARY KEY (`event_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -537,7 +566,7 @@ ALTER TABLE `tblautonumbers`
 -- AUTO_INCREMENT for table `tblcategory`
 --
 ALTER TABLE `tblcategory`
-  MODIFY `CATEGORYID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `CATEGORYID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `tblcompany`
@@ -555,19 +584,35 @@ ALTER TABLE `tblemployees`
 -- AUTO_INCREMENT for table `tblfeedback`
 --
 ALTER TABLE `tblfeedback`
-  MODIFY `FEEDBACKID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `FEEDBACKID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbljob`
 --
 ALTER TABLE `tbljob`
-  MODIFY `JOBID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `JOBID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `tbljobregistration`
 --
 ALTER TABLE `tbljobregistration`
   MODIFY `REGISTRATIONID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
+
+--
+-- AUTO_INCREMENT for table `tbl_tracking_events`
+--
+ALTER TABLE `tbl_tracking_events`
+  MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `tblusers`
+--
+ALTER TABLE `tblusers`
+  ADD CONSTRAINT `fk_company_user` FOREIGN KEY (`COMPANYID`) REFERENCES `tblcompany` (`COMPANYID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
