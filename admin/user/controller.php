@@ -41,6 +41,7 @@ switch ($action) {
 			$user->USERNAME			= $_POST['U_USERNAME'];
 			$user->PASS				=sha1($_POST['U_PASS']);
 			$user->ROLE				=  $_POST['U_ROLE'];
+             $user->COMPANYID  = $_POST['U_COMPANY'];
 			$user->create();
 
 						$autonum = New Autonumber(); 
@@ -69,6 +70,7 @@ switch ($action) {
         $user->USERNAME = $_POST['U_USERNAME'];
         $user->PASS = sha1($_POST['U_PASS']);
         $user->ROLE = $_POST['U_ROLE'];
+        $user->COMPANYID = $_POST['U_COMPANY'];
         $user->update($_POST['USERID']);
 
         message("Profile has been updated!", "success");

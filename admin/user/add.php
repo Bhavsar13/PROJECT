@@ -1,7 +1,19 @@
                       <?php 
+
                         if (!isset($_SESSION['ADMIN_USERID'])){
                           redirect(web_root."admin/index.php");
                          }
+$host = "localhost"; // Replace with your database host
+$username = "root"; // Replace with your database username
+$password = ""; // Replace with your database password
+$database = "Internship"; // Replace with your database name
+
+$connection = mysqli_connect($host, $username, $password, $database);
+
+// Check connection
+if (!$connection) {
+die("Database connection failed: " . mysqli_connect_error());
+}
 
                       $autonum = New Autonumber();
                       $res = $autonum->set_autonumber('userid');
@@ -63,6 +75,25 @@
                               </div>
                           </div>
 
+                          <div class="form-group">
+                              <div class="col-md-8">
+                                  <label class="col-md-4 control-label" for="U_COMPANY">Company:</label>
+                                  <div class="col-md-8">
+                                      <select class="form-control input-sm" name="U_COMPANY" id="U_COMPANY">
+                                          <?php
+                // Query the database to fetch company names
+                $companyQuery = "SELECT `COMPANYID`, `COMPANYNAME` FROM `tblcompany`";
+                $companyResult = mysqli_query($connection, $companyQuery);
+
+                // Populate the dropdown with company names
+                while ($companyRow = mysqli_fetch_assoc($companyResult)) {
+                    echo '<option value="' . $companyRow['COMPANYID'] . '">' . $companyRow['COMPANYNAME'] . '</option>';
+                }
+                ?>
+                                      </select>
+                                  </div>
+                              </div>
+                          </div>
 
 
                           <div class="form-group">

@@ -1,39 +1,71 @@
-<?php
-     if (!isset($_SESSION['ADMIN_USERID'])){
-      redirect(web_root."admin/index.php");
-     }
+<?php 
+if (!isset($_SESSION['ADMIN_USERID'])) {
+    redirect(web_root."admin/index.php");
+}
 
+$autonum = New Autonumber();
+$res = $autonum->set_autonumber('employeeid');
+
+// Fetch the COMPANYID of the currently logged-in user from the session
+$loggedInUserId = $_SESSION['ADMIN_USERID'];
+$companyID = '';  // Initialize the variable
+$userRole = '';  // Initialize the user role variable
+
+// Check if the user is logged in and the session variable exists
+if (isset($loggedInUserId)) {
+    // Retrieve the COMPANYID and ROLE from the user data in your database (assuming you have a user model or function to fetch user data)
+    $sql = "SELECT COMPANYID, ROLE FROM tblusers WHERE USERID = '$loggedInUserId'";
+    $mydb->setQuery($sql);
+    $user = $mydb->loadSingleResult();
+
+    if ($user) {
+        $companyID = $user->COMPANYID;  // Assign the COMPANYID to the variable
+        $userRole = $user->ROLE;  // Assign the user's role to the variable
+    }
+}
 ?>
+
 <form class="form-horizontal span6" action="controller.php?action=add" method="POST">
 
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Add New Job Vacancy</h1>
+            <h1 class="page-header">Add New Internship Vacancy</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
 
+    <?php if ($userRole === 'Administrator'): ?>
+    <!-- Display the dropdown menu for administrators -->
     <div class="form-group">
         <div class="col-md-8">
-            <label class="col-md-4 control-label" for="COMPANYNAME">Company Name:</label>
-
+            <label class="col-md-4 control-label" for="COMPANYNAME">Select Company:</label>
             <div class="col-md-8">
                 <select class="form-control input-sm" id="COMPANYID" name="COMPANYID">
-                    <option value="None">Select</option>
                     <?php 
-                            $sql ="Select * From tblcompany";
+                     $sql ="Select * From tblcompany";
                             $mydb->setQuery($sql);
                             $res  = $mydb->loadResultList();
                             foreach ($res as $row) {
                               # code...
                               echo '<option value='.$row->COMPANYID.'>'.$row->COMPANYNAME.'</option>';
                             }
-
-                          ?>
+                    ?>
                 </select>
             </div>
         </div>
     </div>
+    <?php else: ?>
+    <!-- Display the Company Name field for other team roles -->
+    <div class="form-group" style="display: none;">
+        <div class="col-md-8">
+            <label class="col-md-4 control-label" for="COMPANYNAME">Company Name:</label>
+            <div class="col-md-8">
+                <input class="form-control input-sm" id="COMPANYID" name="COMPANYID" type="text" value="<?php echo $companyID; ?>" readonly>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+
 
     <div class="form-group">
         <div class="col-md-8">

@@ -34,7 +34,7 @@ switch ($action) {
 			redirect('index.php?view=add');
 		}else{	
 			$job = New Jobs();
-			$job->COMPANYID							= $_POST['COMPANYID']; 
+			$job->COMPANYID = $_POST['COMPANYID'];
 			$job->CATEGORY							= $_POST['CATEGORY']; 
 			$job->OCCUPATIONTITLE					= $_POST['OCCUPATIONTITLE'];
 			$job->REQ_NO_EMPLOYEES					= $_POST['REQ_NO_EMPLOYEES'];

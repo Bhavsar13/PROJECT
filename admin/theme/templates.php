@@ -142,8 +142,6 @@
         <aside class="main-sidebar">
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar">
-
-
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu">
                     <li class="<?php echo (currentpage() == 'index.php') ? "active" : false;?>">
@@ -151,13 +149,13 @@
                             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                         </a>
                     </li>
-
+                    <?php if ($singleuser->ROLE === 'Administrator') { ?>
                     <li class="<?php echo (currentpage() == 'category') ? "active" : false;?>">
                         <a href="<?php echo web_root ;?>admin/category/">
                             <i class="fa fa-list"></i> <span>Category</span>
                         </a>
                     </li>
-
+                    <?php } ?>
                     <?php if ($singleuser->ROLE === 'Administrator') { ?>
                     <li class="<?php echo (currentpage() == 'company') ? "active" : false;?>">
                         <a href="<?php echo web_root ;?>admin/company/">
@@ -175,19 +173,32 @@
                             <i class="fa fa-users"></i> <span>Employee</span>
                         </a>
                     </li>
-                    <li class="<?php echo (currentpage() == 'applicants') ? "active" : false;?>">
-                        <a href="<?php echo web_root ;?>admin/applicants/">
+                    <li class="<?php echo (currentpage() == 'applicants') ? "active" : ""; ?>">
+                        <a href="<?php echo web_root; ?>admin/applicants/">
                             <i class="fa fa-users"></i> <span>Applicants</span>
                             <span class="label label-primary pull-right">
                                 <?php
-                $sql = "SELECT count(*) as 'APPL' FROM `tbljobregistration` WHERE `PENDINGAPPLICATION`=1";
-                $mydb->setQuery($sql);
-                $pending = $mydb->loadSingleResult();
+            if ($singleuser->ROLE === 'Administrator') {
+                $sql = "SELECT count(*) as 'APPL' FROM `tbljobregistration` WHERE `PENDINGAPPLICATION` = 1";
+            } elseif ($singleuser->ROLE === 'Staff') {
+                $companyId = $singleuser->COMPANYID;
+                $sql = "SELECT count(*) as 'APPL' FROM `tbljobregistration` WHERE `PENDINGAPPLICATION` = 1 AND `COMPANYID` = $companyId";
+            }
+
+            $mydb->setQuery($sql);
+            $pending = $mydb->loadSingleResult();
+
+            // Check if $pending is not empty before displaying the count
+            if (!empty($pending) && isset($pending->APPL)) {
                 echo $pending->APPL;
-              ?>
+            } else {
+                echo "0"; // Display 0 if there are no pending applications
+            }
+            ?>
                             </span>
                         </a>
                     </li>
+
                     <?php if ($singleuser->ROLE === 'Administrator') { ?>
                     <li class="<?php echo (currentpage() == 'applicants') ? "active" : false;?>">
                         <a href="<?php echo web_root ;?>admin/applicantsmanager/">
