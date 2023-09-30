@@ -1,9 +1,9 @@
 # Project
 Master's Project
 Download Zip File
-Unzip and put a file in htdocs folder
-Unzip plugin folder inside PROJECT Folder.
+Unzip and put a file in htdocs folder and rename a folder Internship
+Unzip plugin folder inside Internship Folder.
 Unzip chart.js folder inside ADMIN Folder.
 Import Internship.sql in Mysql.
 
-Run - localhost/PROJECT
+Run - localhost/Internship
