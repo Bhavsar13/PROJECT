@@ -1,7 +1,7 @@
 <?php
 
 require_once("include/initialize.php");
-
+require_once 'send_email.php'; 
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 
 switch ($action) {
@@ -13,11 +13,104 @@ switch ($action) {
 	case 'register' :
 	doRegister();
 	break;  
-
+case 'verifyemail':
+    verifyEmail();
+    break;
 	case 'login' :
 	doLogin();
 	break; 
+        
+   case 'resetPassword': // Add this case for password reset
+        doResetPassword();
+        break;    
 	}
+
+function doResetPassword() {
+    global $mydb;
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["email"]) && isset($_POST["newPassword"])) {
+        $email = $_POST["email"];
+        $newPassword = $_POST["newPassword"];
+
+        // Create a PDO connection
+        try {
+            $pdo = new PDO("mysql:host=localhost;dbname=Internship", "root", "");
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            die("Database connection failed: " . $e->getMessage());
+        }
+
+        // Perform a SQL query to check if the email exists in the database
+        $sql = "SELECT `APPLICANTID` FROM `tblapplicants` WHERE `EMAILADDRESS` = :email";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        $result = $stmt->fetch();
+
+        if ($result) {
+            // Email exists in the database, update the password
+            $hashedPassword = sha1($newPassword); // Use SHA-1 for hashing (replace with your preferred hashing method)
+
+            $updateSql = "UPDATE `tblapplicants` SET `PASS` = :hashedPassword WHERE `EMAILADDRESS` = :email";
+            $updateStmt = $pdo->prepare($updateSql);
+            $updateStmt->bindParam(':hashedPassword', $hashedPassword);
+            $updateStmt->bindParam(':email', $email);
+
+            if ($updateStmt->execute()) {
+                message("Password has been reset successfully.", "success");
+                redirect("index.php?q=success");
+            } else {
+                message("Error resetting password.", "error");
+                redirect("reset.php");
+            }
+        } else {
+            message("Email address not found.", "error");
+            redirect("reset.php");
+        }
+    }
+}
+
+function verifyEmail() {
+    global $mydb;
+
+    // Get the verification code from the form input
+    $verificationCode = isset($_POST['verificationCode']) ? $_POST['verificationCode'] : '';
+
+    if (empty($verificationCode)) {
+        // Handle the case where the verification code is missing
+        // Display an error message or redirect to an error page
+        // Optionally, you can include a link to resend the verification email
+        message("Verification code is required.", "error");
+        redirect("verify.php"); // Replace with the appropriate URL
+        return;
+    }
+
+    // Check if the verification code exists in the database
+    // Assuming you have a table named 'tblapplicants' with a column 'EMAIL_VERIFICATION_CODE'
+    // Replace 'EMAIL_VERIFICATION_CODE' with your actual database column name
+    $sql = "SELECT * FROM `tblapplicants` WHERE `EMAIL_VERIFICATION_CODE` = '{$verificationCode}'";
+    $mydb->setQuery($sql);
+    $result = $mydb->loadSingleResult();
+
+    if ($result) {
+        // Verification code is valid, update the 'email_verified' field to 1
+        // Assuming you have a column named 'email_verified' in your 'tblapplicants' table
+        // Replace 'email_verified' with your actual database column name
+        $updateSql = "UPDATE `tblapplicants` SET `email_verified` = 1 WHERE `EMAIL_VERIFICATION_CODE` = '{$verificationCode}'";
+        $mydb->setQuery($updateSql);
+        $mydb->executeQuery();
+         message("Email verification successful. You can now log in to your account.", "success");
+
+        // Redirect to success.php
+        redirect("index.php?q=success");
+        exit;
+    } else {
+        // Invalid verification code
+        message("Invalid verification code. Please check and try again.", "error");
+        redirect("verify.php"); // Replace with the appropriate URL
+    }
+}
+
 
 function doSubmitApplication() {
     global $mydb;
@@ -169,11 +262,12 @@ function doRegister() {
             redirect("index.php?q=register");
         }
 
+        // Generate a verification token
+        $verificationCode = generateVerificationCode(6);
+
         // Check if the username is already taken
-         $existingUser = Applicants::usernameExists($_POST['USERNAME']);
+        $existingUser = Applicants::usernameExists($_POST['USERNAME']);
         if ($existingUser) {
-            // Debugging statement
-            error_log("Username already exists. Please choose a different one.");
             message("Username already exists. Please choose a different one.", "error");
             redirect("index.php?q=register");
         }
@@ -181,13 +275,11 @@ function doRegister() {
         // Check if the email address is already taken
         $existingEmail = Applicants::emailExists($_POST['EMAILADDRESS']);
         if ($existingEmail) {
-            // Debugging statement
-            error_log("Email address already exists. Please use a different one.");
             message("Email address already exists. Please use a different one.", "error");
             redirect("index.php?q=register");
         }
 
-        // Create a new applicant record
+        // Create a new applicant record with verification token
         $autonum = new Autonumber();
         $auto = $autonum->set_autonumber('APPLICANT');
 
@@ -196,44 +288,51 @@ function doRegister() {
         $applicant->USERNAME = $_POST['USERNAME'];
         $applicant->PASS = sha1($_POST['PASS']);
         $applicant->EMAILADDRESS = $_POST['EMAILADDRESS'];
-        
-        // Check if the username or email address is already taken again before creating the account
-        if (!$applicant->create()) {
-            message("Account creation failed. Please try again later.", "error");
-            redirect("index.php?q=register");
-        }
+          $applicant->EMAIL_VERIFICATION_CODE = $verificationCode; // Store the codeStore the token
+        $applicant->create();
 
         $autonum->auto_update('APPLICANT');
 
-        message("You are successfully registered to the site. You can login now!", "success");
+        // Send a verification email with the token
+       sendVerificationEmail($_POST['EMAILADDRESS'], $verificationCode);
+
+        message("Registration successful. Please check your email to verify your address.", "success");
         redirect("index.php?q=success");
     }
 }
+function generateVerificationCode($length = 6) {
+    $characters = '0123456789';
+    $code = '';
 
+    for ($i = 0; $i < $length; $i++) {
+        $code .= $characters[rand(0, strlen($characters) - 1)];
+    }
 
- function doLogin(){
-	
-	$email = trim($_POST['USERNAME']);
-	$upass  = trim($_POST['PASS']);
-	$h_upass = sha1($upass);
- 
-  //it creates a new objects of member
-    $applicant = new Applicants();
-    //make use of the static function, and we passed to parameters
-    $res = $applicant->applicantAuthentication($email, $h_upass);
-    if ($res==true) { 
-
-       	message("You are now successfully login!","success");
-       
-       // $sql="INSERT INTO `tbllogs` (`USERID`,USERNAME, `LOGDATETIME`, `LOGROLE`, `LOGMODE`) 
-       //    VALUES (".$_SESSION['USERID'].",'".$_SESSION['FULLNAME']."','".date('Y-m-d H:i:s')."','".$_SESSION['UROLE']."','Logged in')";
-       //    mysql_query($sql) or die(mysql_error()); 
-         redirect(web_root."applicant/");
-     
-    }else{
-    	 echo "Account does not exist! Please contact Administrator."; 
-    } 
+    return $code;
 }
+ function doLogin(){
+
+     $email = trim($_POST['USERNAME']);
+     $upass = trim($_POST['PASS']);
+     $h_upass = sha1($upass);
+
+     //it creates a new objects of member
+     $applicant = new Applicants();
+     //make use of the static function, and we passed to parameters
+     $res = $applicant->applicantAuthentication($email, $h_upass);
+     if ($res==true) {
+
+     message("You are now successfully login!","success");
+
+     // $sql="INSERT INTO `tbllogs` (`USERID`,USERNAME, `LOGDATETIME`, `LOGROLE`, `LOGMODE`)
+     // VALUES (".$_SESSION['USERID'].",'".$_SESSION['FULLNAME']."','".date('Y-m-d H:i:s')."','".$_SESSION['UROLE']."','Logged in')";
+     // mysql_query($sql) or die(mysql_error());
+     redirect(web_root."applicant/");
+
+     }else{
+     echo "Account does not exist! Please contact Administrator.";
+     }
+ }
 function UploadFile($jobid = 0) {
     $target_dir = $_SERVER['DOCUMENT_ROOT'] . "/PROJECT/resume/"; 
     $target_file = $target_dir . date("dmYhis") . basename($_FILES["picture"]["name"]);

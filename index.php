@@ -31,10 +31,8 @@ switch ($view) {
         $title="Success";	
 		$content='success.php';		
 		break;
-        case 'create_profile' :
-        $title="Profile Building";
-        $content='create_profile.php';
-        break;
+        
+        
 	case 'register' :
         $title="Register New Member";	
 		$content='register.php';		
@@ -51,7 +49,10 @@ switch ($view) {
         $title='Advance Search';	
 		$content='advancesearch.php';		
 		break;	
-
+case 'verify' :
+        $title='verify';	
+		$content='verify.php';		
+		break;	
 	case 'result' :
         $title='Advance Search';	
 		$content='advancesearchresult.php';		
@@ -60,14 +61,19 @@ switch ($view) {
         $title='Search by Company';	
 		$content='searchbycompany.php';		
 		break;	
+        case 'reset' :
+        $title='Reset Password';	
+		$content='reset.php';		
+		break;	
 	case 'search-function' :
         $title='Search by Category';	
 		$content='searchbyfunction.php';		
 		break;	
 	case 'search-jobtitle' :
-        $title='Search by Job Title';	
+        $title='Search by Internship Title';	
 		$content='searchbytitle.php';		
-		break;						
+		break;	
+        
 	default :
 	    $active_home='active';
 	    $title="Home";	

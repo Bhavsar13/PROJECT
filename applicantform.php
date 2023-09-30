@@ -16,6 +16,38 @@
         </div>
     </div>
 </div>
+
+<li class="<?php if(isset($_GET['q']) && $_GET['q'] == 'admin'){ echo 'active'; } ?> nav-item cta mr-md-2">
+    <a class="login-button" data-target="#myModal" data-toggle="modal" href="#">
+        Login
+    </a>
+</li>
+<style>
+    /* Style for the login button */
+    .login-button {
+        background-color: #007bff;
+        /* Blue background color */
+        color: #fff;
+        /* White text color */
+        padding: 10px 20px;
+        /* Padding */
+        border-radius: 5px;
+        /* Rounded corners */
+        text-decoration: none;
+        /* Remove underlines from the link */
+        transition: background-color 0.3s ease;
+        /* Smooth color transition on hover */
+    }
+
+    /* Style for the login button on hover */
+    .login-button:hover {
+        background-color: #0056b3;
+        /* Darker blue on hover */
+    }
+
+</style>
+
+<!--
 <div class="form-group">
     <div class="col-md-11">
         <label class="col-md-4 control-label" for="FNAME">Firstname:</label>
@@ -45,8 +77,7 @@
         <div class="col-md-8">
             <input name="deptid" type="hidden" value="">
             <input class="form-control input-sm" id="MNAME" name="MNAME" placeholder="Middle Name" onkeyup="javascript:capitalize(this.id, this.value);" autocomplete="off">
-            <!-- <input class="form-control input-sm" id="DEPARTMENT_DESC" name="DEPARTMENT_DESC" placeholder=
-		      "Description" type="text" value=""> -->
+            
         </div>
     </div>
 </div>
@@ -171,7 +202,7 @@
                 <option value="Single">Single</option>
                 <option value="Married">Married</option>
 
-                <!-- <option value="Fourth" >Fourth</option> -->
+                
             </select>
         </div>
     </div>
@@ -203,8 +234,7 @@
         <div class="col-md-8">
             <input name="deptid" type="hidden" value="">
             <input class="form-control input-sm" id="PASS" name="PASS" placeholder="Password" type="password" onkeyup="javascript:capitalize(this.id, this.value);" autocomplete="off">
-            <!-- <input class="form-control input-sm" id="DEPARTMENT_DESC" name="DEPARTMENT_DESC" placeholder=
-          "Description" type="text" value=""> -->
+            
         </div>
     </div>
 </div>
