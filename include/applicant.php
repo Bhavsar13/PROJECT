@@ -11,7 +11,45 @@ class Applicants {
 	}
     
     
+function generateRandomToken($length = 32) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $token = '';
 
+    for ($i = 0; $i < $length; $i++) {
+        $token .= $characters[rand(0, strlen($characters) - 1)];
+    }
+
+    return $token;
+}
+    // Inside your Applicants class, add the findByVerificationToken function:
+
+public static function findByVerificationToken($verificationToken) {
+    global $mydb;
+
+    // Sanitize the token to prevent SQL injection
+    $verificationToken = $mydb->escape_value($verificationToken);
+
+    $query = "SELECT * FROM " . self::$tblname . " WHERE EMAIL_VERIFICATION_TOKEN = '$verificationToken' LIMIT 1";
+    $mydb->setQuery($query);
+    $cur = $mydb->executeQuery();
+
+    if ($cur === false) {
+        // An error occurred while executing the query
+        return null;
+    }
+
+    $row = $mydb->fetch_array($cur);
+
+    if ($row) {
+        // User with the verification token found, create an instance and return it
+        return self::instantiate($row);
+    } else {
+        // No user found with the given token
+        return null;
+    }
+}
+
+    
     public static function usernameExists($username) {
         global $mydb;
         $username = $mydb->escape_value($username); // Sanitize the username
@@ -87,21 +125,21 @@ class Applicants {
 			return $cur;
 	}
 	function applicantAuthentication($U_USERNAME,$h_pass){
-		global $mydb;
-		$mydb->setQuery("SELECT * FROM `tblapplicants` WHERE `USERNAME`='".$U_USERNAME."' AND `PASS`='".$h_pass."'");
-		$cur = $mydb->executeQuery();
-		if($cur==false){
-			die(mysql_error());
-		}
-		$row_count = $mydb->num_rows($cur);//get the number of count
-		 if ($row_count == 1){
-		 $emp_found = $mydb->loadSingleResult(); 
-		 	$_SESSION['APPLICANTID']   		= $emp_found->APPLICANTID; 
-		 	$_SESSION['USERNAME'] 			= $emp_found->USERNAME;  
-		   return true;
-		 }else{
-		 	return false;
-		 }
+	global $mydb;
+	$mydb->setQuery("SELECT * FROM `tblapplicants` WHERE `USERNAME`='".$U_USERNAME."' AND `PASS`='".$h_pass."'");
+	$cur = $mydb->executeQuery();
+	if($cur==false){
+	die(mysql_error());
+	}
+	$row_count = $mydb->num_rows($cur);//get the number of count
+	if ($row_count == 1){
+	$emp_found = $mydb->loadSingleResult();
+	$_SESSION['APPLICANTID'] = $emp_found->APPLICANTID;
+	$_SESSION['USERNAME'] = $emp_found->USERNAME;
+	return true;
+	}else{
+	return false;
+	}
 	}
 
 	 
