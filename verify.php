@@ -19,7 +19,7 @@
                 <!-- JavaScript to autofill the verification code -->
                 <script>
                     // Replace 'your_verification_code' with the actual code value
-                    document.getElementById('verificationCode').value = 'your_verification_code';
+                    document.getElementById('verificationCode').value = '';
 
                 </script>
 

@@ -26,7 +26,7 @@ function sendVerificationEmail($recipientEmail, $verificationCode) {
         $mail->addReplyTo('sujalbhavsar22@gmail.com', 'Personallocalhost'); // Reply-to email and name
 
         // Content
-        $verificationLink = "http://localhost/PROJECT/index.php?q=verify&code={$verificationCode}"; // Use "&" instead of "?"
+        $verificationLink = "http://localhost/Internship/index.php?q=verify&code={$verificationCode}"; // Use "&" instead of "?"
 
         // Create a verification code element
         $verificationCodeElement = "<p>Your verification code: <strong>{$verificationCode}</strong></p>";

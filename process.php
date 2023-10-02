@@ -252,7 +252,13 @@ function doUpdate($jobid=0,$fileid=0) {
  
 	}
 }
-
+function isStrongPassword($password) {
+    // Define a regular expression pattern for a strong password
+    $pattern = "/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/";
+    
+    // Use preg_match to check if the password matches the pattern
+    return preg_match($pattern, $password);
+}
 function doRegister() {
     global $mydb;
     if (isset($_POST['btnRegister'])) {
@@ -262,9 +268,16 @@ function doRegister() {
             redirect("index.php?q=register");
         }
 
+          $password = $_POST['PASS'];
+        if (!isStrongPassword($password)) {
+            message("Password is weak. It should include at least one uppercase letter, one lowercase letter, one digit, and one special character. Minimum length: 8 characters.", "error");
+            redirect("index.php?q=register");
+            return;
+        }
+
         // Generate a verification token
         $verificationCode = generateVerificationCode(6);
-
+        
         // Check if the username is already taken
         $existingUser = Applicants::usernameExists($_POST['USERNAME']);
         if ($existingUser) {
@@ -334,7 +347,7 @@ function generateVerificationCode($length = 6) {
      }
  }
 function UploadFile($jobid = 0) {
-    $target_dir = $_SERVER['DOCUMENT_ROOT'] . "/PROJECT/resume/"; 
+    $target_dir = $_SERVER['DOCUMENT_ROOT'] . "/Internship/resume/"; 
     $target_file = $target_dir . date("dmYhis") . basename($_FILES["picture"]["name"]);
     $uploadOk = 1;
     $fileType = pathinfo($target_file, PATHINFO_EXTENSION);
@@ -360,7 +373,7 @@ function UploadFile($jobid = 0) {
     }
 }
 function UploadVideo($jobid = 0) {
-$target_dir = $_SERVER['DOCUMENT_ROOT'] . "/PROJECT/resume/"; // Set your video upload directory
+$target_dir = $_SERVER['DOCUMENT_ROOT'] . "/Internship/resume/"; // Set your video upload directory
 $target_file = $target_dir . date("dmYhis") . basename($_FILES["video"]["name"]);
 $uploadOk = 1;
 $videoFileType = pathinfo($target_file, PATHINFO_EXTENSION);
