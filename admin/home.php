@@ -1,4 +1,6 @@
 <?php
+
+
 require_once("../include/initialize.php");
 $servername = "localhost";
 $username = "root";
@@ -90,7 +92,6 @@ if ($resultHiredStudents) {
     $totalHiredStudents = $rowHiredStudents['total'];
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
