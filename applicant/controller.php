@@ -116,7 +116,7 @@ global $mydb;
 } 
 
 function UploadImage(){
-	$target_dir = $_SERVER['DOCUMENT_ROOT'] . "/PROJECT/Profilepictures/";
+	$target_dir = $_SERVER['DOCUMENT_ROOT'] . "/Internship/Profilepictures/";
 	$target_file = $target_dir . date("dmYhis") . basename($_FILES["picture"]["name"]);
 	$uploadOk = 1;
 	$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
