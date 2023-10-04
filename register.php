@@ -56,9 +56,7 @@
                      <label class="col-md-4 control-label" for="password-strength">Password Strength:</label>
                      <div class="col-md-8">
                          <span id="password-strength"></span>
-                         <button type="button" class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top" title="Strong passwords should include at least one uppercase letter, one lowercase letter, one digit, and one special character. Minimum length: 8 characters.">
-                             <i class="fa fa-info-circle"></i>
-                         </button>
+                         <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Strong passwords should include at least one uppercase letter, one lowercase letter, one digit, and one special character. Minimum length: 8 characters."></i>
                      </div>
                  </div>
              </div>
@@ -94,7 +92,7 @@
      document.addEventListener('DOMContentLoaded', function() {
          const passwordField = document.getElementById('PASS');
          const passwordStrength = document.getElementById('password-strength');
-         const infoButton = document.querySelector('.btn-info');
+         const infoIcon = document.querySelector('.fa-info-circle'); // Select the "i" element
 
          // Function to check the password format and display strength
          function checkPasswordFormat() {
@@ -113,7 +111,7 @@
          passwordField.addEventListener('input', checkPasswordFormat);
 
          // Initialize Bootstrap tooltip for the info button
-         $(infoButton).tooltip();
+         $(infoIcon).tooltip();
      });
 
  </script>

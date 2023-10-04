@@ -81,7 +81,7 @@ function verifyEmail() {
         // Display an error message or redirect to an error page
         // Optionally, you can include a link to resend the verification email
         message("Verification code is required.", "error");
-        redirect("verify.php"); // Replace with the appropriate URL
+        redirect("index.php?q=verify"); // Replace with the appropriate URL
         return;
     }
 
