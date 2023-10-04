@@ -72,7 +72,7 @@ if (isset($loggedInUserId)) {
             <label class="col-md-4 control-label" for="CATEGORY">Category :</label>
 
             <div class="col-md-8">
-                <select class="form-control input-sm" id="CATEGORY" name="CATEGORY">
+                <select class="form-control input-sm" id="CATEGORY" name="CATEGORY" required>
                     <option value="None">Select</option>
                     <?php 
                             $sql ="Select * From tblcategory";
@@ -92,7 +92,7 @@ if (isset($loggedInUserId)) {
         <div class="col-md-8">
             <label class="col-md-4 control-label" for="OCCUPATIONTITLE">Occupation Title:</label>
             <div class="col-md-8">
-                <input class="form-control input-sm" id="OCCUPATIONTITLE" name="OCCUPATIONTITLE" placeholder="Occupation Title" autocomplete="none" />
+                <input class="form-control input-sm" id="OCCUPATIONTITLE" name="OCCUPATIONTITLE" placeholder="Occupation Title" autocomplete="none" required />
             </div>
         </div>
     </div>
@@ -101,7 +101,7 @@ if (isset($loggedInUserId)) {
         <div class="col-md-8">
             <label class="col-md-4 control-label" for="REQ_NO_EMPLOYEES">Required no. of Employees:</label>
             <div class="col-md-8">
-                <input class="form-control input-sm" id="REQ_NO_EMPLOYEES" name="REQ_NO_EMPLOYEES" placeholder="Required no. of Employees" autocomplete="none" />
+                <input class="form-control input-sm" id="REQ_NO_EMPLOYEES" name="REQ_NO_EMPLOYEES" placeholder="Required no. of Employees" autocomplete="none" required />
             </div>
         </div>
     </div>
@@ -110,7 +110,7 @@ if (isset($loggedInUserId)) {
         <div class="col-md-8">
             <label class="col-md-4 control-label" for="SALARIES">Salary:</label>
             <div class="col-md-8">
-                <input class="form-control input-sm" id="SALARIES" name="SALARIES" placeholder="Salary" autocomplete="none" />
+                <input class="form-control input-sm" id="SALARIES" name="SALARIES" placeholder="Salary" autocomplete="none" required />
             </div>
         </div>
     </div>
@@ -119,7 +119,7 @@ if (isset($loggedInUserId)) {
         <div class="col-md-8">
             <label class="col-md-4 control-label" for="DURATION_EMPLOYEMENT">Duration of Employment:</label>
             <div class="col-md-8">
-                <input class="form-control input-sm" id="DURATION_EMPLOYEMENT" name="DURATION_EMPLOYEMENT" placeholder="Duration of Employment" autocomplete="none" />
+                <input class="form-control input-sm" id="DURATION_EMPLOYEMENT" name="DURATION_EMPLOYEMENT" placeholder="Duration of Employment" autocomplete="none" required />
             </div>
         </div>
     </div>
@@ -128,7 +128,7 @@ if (isset($loggedInUserId)) {
         <div class="col-md-8">
             <label class="col-md-4 control-label" for="QUALIFICATION_WORKEXPERIENCE">Qualification/Work Experience:</label>
             <div class="col-md-8">
-                <textarea class="form-control input-sm" id="QUALIFICATION_WORKEXPERIENCE" name="QUALIFICATION_WORKEXPERIENCE" placeholder="Qualification/Work Experience" autocomplete="none"></textarea>
+                <textarea class="form-control input-sm" id="QUALIFICATION_WORKEXPERIENCE" name="QUALIFICATION_WORKEXPERIENCE" placeholder="Qualification/Work Experience" autocomplete="none" required></textarea>
             </div>
         </div>
     </div>
@@ -137,7 +137,7 @@ if (isset($loggedInUserId)) {
         <div class="col-md-8">
             <label class="col-md-4 control-label" for="JOBDESCRIPTION">Job Description:</label>
             <div class="col-md-8">
-                <textarea class="form-control input-sm" id="JOBDESCRIPTION" name="JOBDESCRIPTION" placeholder="Job Description" autocomplete="none"></textarea>
+                <textarea class="form-control input-sm" id="JOBDESCRIPTION" name="JOBDESCRIPTION" placeholder="Job Description" autocomplete="none" required></textarea>
             </div>
         </div>
     </div>

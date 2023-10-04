@@ -1,4 +1,3 @@
-
 <?php
 require_once ("../../include/initialize.php");
  	 if (!isset($_SESSION['ADMIN_USERID'])){
@@ -24,36 +23,29 @@ switch ($action) {
  
 	}
    
-	function doInsert(){
-		if(isset($_POST['save'])){
- // `COMPANYID`, `OCCUPATIONTITLE`, `REQ_NO_EMPLOYEES`, `SALARIES`, `DURATION_EMPLOYEMENT`, `QUALIFICATION_WORKEXPERIENCE`, `JOBDESCRIPTION`, `PREFEREDSEX`, `SECTOR_VACANCY`
- 
-		if ( $_POST['COMPANYID'] == "None") {
-			$messageStats = false;
-			message("All field is required!","error");
-			redirect('index.php?view=add');
-		}else{	
-			$job = New Jobs();
-			$job->COMPANYID = $_POST['COMPANYID'];
-			$job->CATEGORY							= $_POST['CATEGORY']; 
-			$job->OCCUPATIONTITLE					= $_POST['OCCUPATIONTITLE'];
-			$job->REQ_NO_EMPLOYEES					= $_POST['REQ_NO_EMPLOYEES'];
-			$job->SALARIES							= $_POST['SALARIES'];
-			$job->DURATION_EMPLOYEMENT				= $_POST['DURATION_EMPLOYEMENT'];
-			$job->QUALIFICATION_WORKEXPERIENCE		= $_POST['QUALIFICATION_WORKEXPERIENCE'];
-			$job->JOBDESCRIPTION					= $_POST['JOBDESCRIPTION'];
-			$job->PREFEREDSEX						= $_POST['PREFEREDSEX'];
-			$job->SECTOR_VACANCY					= $_POST['SECTOR_VACANCY']; 
-			$job->DATEPOSTED						= date('Y-m-d H:i');
-			$job->create();
+function doInsert() {
+    if (isset($_POST['save'])) {
+        $job = new Jobs();
+        $job->COMPANYID = $_POST['COMPANYID'];
+        $job->CATEGORY = $_POST['CATEGORY'];
+        $job->OCCUPATIONTITLE = $_POST['OCCUPATIONTITLE'];
+        $job->REQ_NO_EMPLOYEES = $_POST['REQ_NO_EMPLOYEES'];
+        $job->SALARIES = $_POST['SALARIES'];
+        $job->DURATION_EMPLOYEMENT = $_POST['DURATION_EMPLOYEMENT'];
+        $job->QUALIFICATION_WORKEXPERIENCE = $_POST['QUALIFICATION_WORKEXPERIENCE'];
+        $job->JOBDESCRIPTION = $_POST['JOBDESCRIPTION'];
+        $job->PREFEREDSEX = $_POST['PREFEREDSEX'];
+        $job->SECTOR_VACANCY = $_POST['SECTOR_VACANCY'];
+        $job->DATEPOSTED = date('Y-m-d H:i');
+        
+        // Create a new internship vacancy record
+        $job->create();
 
-			message("New Job Vacancy created successfully!", "success");
-			redirect("index.php");
-			
-		}
-		}
+        message("New Job Vacancy created successfully!", "success");
+        redirect("index.php");
+    }
+}
 
-	}
 
 	function doEdit(){
 		if(isset($_POST['save'])){

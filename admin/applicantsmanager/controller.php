@@ -44,7 +44,10 @@ switch ($action) {
    
 function doInsert(){
     global $mydb;
+
+    // Check if the form is submitted
     if(isset($_POST['btnRegister'])){
+        // Sanitize and validate user inputs
         $requiredFields = ['FNAME', 'LNAME', 'MNAME', 'EMAILADDRESS', 'USERNAME', 'PASS', 'CONFIRMPASS'];
         $emptyFields = [];
 
@@ -59,10 +62,11 @@ function doInsert(){
             message($errorMessage, "error");
             redirect('index.php?view=add');
         } else {
-            // Check if email address already exists
+            // Check if email address already exists (using prepared statement)
             $email = $_POST['EMAILADDRESS'];
-            $sql = "SELECT * FROM tblapplicants WHERE EMAILADDRESS='$email'";
-            $mydb->setQuery($sql);
+            $sql = "SELECT * FROM tblapplicants WHERE EMAILADDRESS = ?";
+            $params = [$email];
+            $mydb->setQuery($sql, $params);
             $cur = $mydb->executeQuery();
             $maxrow = $mydb->num_rows($cur);
 
@@ -91,10 +95,11 @@ function doInsert(){
                 $applicant->MNAME = $_POST['MNAME'];
                 $applicant->USERNAME = $_POST['USERNAME'];
                 $applicant->PASS = $hashedPassword;
-                $applicant->EMAILADDRESS = $_POST['EMAILADDRESS'];
+                $applicant->EMAILADDRESS = $email;
 
                 // Other fields can be added here
 
+                // Insert the applicant into the database (assuming you have a method like create())
                 $applicant->create();
 
                 // Update the autonumber counter
@@ -106,6 +111,7 @@ function doInsert(){
         }
     }
 }
+
 
 function doEdit(){
     if(isset($_POST['save'])){

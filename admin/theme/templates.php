@@ -67,6 +67,7 @@
                     <ul class="nav navbar-nav">
 
                         <?php
+                        
               $user = New User();
               $singleuser = $user->single_user($_SESSION['ADMIN_USERID']);
 
@@ -75,7 +76,8 @@
                         <li class="dropdown user user-menu" style="padding-right: 15px;">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <img src="<?php echo web_root.'admin/user/'. $singleuser->PICLOCATION;?>" class="user-image" alt="User Image">
-                                <span class="hidden-xs"><?php echo $singleuser->FULLNAME; ?></span>
+                                <span class="hidden-xs"><?php echo isset($singleuser) ? $singleuser->FULLNAME : 'User'; ?></span>
+
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->

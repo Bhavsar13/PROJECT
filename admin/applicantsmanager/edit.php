@@ -41,7 +41,7 @@ foreach ($civilStatusOptions as $status) {
         <div class="col-md-8">
             <label class="col-md-4 control-label" for="USERNAME">Username:</label>
             <div class="col-md-8">
-                <input class="form-control input-sm" id="USERNAME" name="USERNAME" placeholder="Username" type="text" value="<?php echo $app->USERNAME; ?>" autocomplete="off">
+                <input class="form-control input-sm" id="USERNAME" name="USERNAME" placeholder="Username" type="text" value="<?php echo $app->USERNAME; ?>" autocomplete="off" required>
             </div>
         </div>
     </div>
@@ -51,7 +51,7 @@ foreach ($civilStatusOptions as $status) {
         <div class="col-md-8">
             <label class="col-md-4 control-label" for="PASS">New Password:</label>
             <div class="col-md-8">
-                <input class="form-control input-sm" id="PASS" name="PASS" placeholder="Password" type="password" value="" autocomplete="off">
+                <input class="form-control input-sm" id="PASS" name="PASS" placeholder="Password" type="password" value="" autocomplete="off" required>
             </div>
         </div>
     </div>
@@ -59,7 +59,7 @@ foreach ($civilStatusOptions as $status) {
         <div class="col-md-8">
             <label class="col-md-4 control-label" for="CONFIRM_PASS">Confirm Password:</label>
             <div class="col-md-8">
-                <input class="form-control input-sm" id="CONFIRM_PASS" name="CONFIRM_PASS" placeholder="Confirm Password" type="password" value="" autocomplete="off">
+                <input class="form-control input-sm" id="CONFIRM_PASS" name="CONFIRM_PASS" placeholder="Confirm Password" type="password" value="" autocomplete="off" required>
             </div>
         </div>
     </div>
@@ -68,7 +68,7 @@ foreach ($civilStatusOptions as $status) {
         <div class="col-md-8">
             <label class="col-md-4 control-label" for="EMAILADDRESS">Email Address:</label>
             <div class="col-md-8">
-                <input class="form-control input-sm" id="EMAILADDRESS" name="EMAILADDRESS" placeholder="Email Address" type="email" value="<?php echo $app->EMAILADDRESS; ?>" autocomplete="off">
+                <input class="form-control input-sm" id="EMAILADDRESS" name="EMAILADDRESS" placeholder="Email Address" type="email" value="<?php echo $app->EMAILADDRESS; ?>" autocomplete="off" required>
             </div>
         </div>
     </div>
@@ -78,7 +78,7 @@ foreach ($civilStatusOptions as $status) {
         <div class="col-md-8">
             <label class="col-md-4 control-label" for="CONTACTNO">Contact No.:</label>
             <div class="col-md-8">
-                <input class="form-control input-sm" id="CONTACTNO" name="CONTACTNO" placeholder="Contact No." type="text" value="<?php echo $app->CONTACTNO; ?>" autocomplete="off">
+                <input class="form-control input-sm" id="CONTACTNO" name="CONTACTNO" placeholder="Contact No." type="text" value="<?php echo $app->CONTACTNO; ?>" autocomplete="off" required>
             </div>
         </div>
     </div>

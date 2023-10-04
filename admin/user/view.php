@@ -24,7 +24,7 @@ if(!$_SESSION['ADMIN_ROLE']=='Administrator'){
             </div>
             <div class="col-md-6">
                 <h1><strong>User Profile</strong></h1><br>
-                <form class="form-horizontal span6" action="controller.php?action=edit&view=" method="POST">
+                <form class="form-horizontal span6" action="controller.php?action=update&view=view&id=<?php echo $singleuser->USERID; ?>" method="POST">
 
 
                     <!-- <div class="form-group">
@@ -68,6 +68,15 @@ if(!$_SESSION['ADMIN_ROLE']=='Administrator'){
                             <div class="col-md-8">
                                 <input name="deptid" type="hidden" value="">
                                 <input class="form-control input-sm" id="U_PASS" name="U_PASS" placeholder="Account Password" type="Password" value="" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <label class="col-md-4 control-label" for="U_CONFIRM_PASS">Confirm Password:</label>
+                            <div class="col-md-8">
+                                <input class="form-control input-sm" id="U_CONFIRM_PASS" name="U_CONFIRM_PASS" placeholder="Confirm Password" type="password" value="" required>
                             </div>
                         </div>
                     </div>

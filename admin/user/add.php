@@ -60,6 +60,14 @@ die("Database connection failed: " . mysqli_connect_error());
                                   </div>
                               </div>
                           </div>
+                          <div class="form-group">
+                              <div class="col-md-8">
+                                  <label class="col-md-4 control-label" for="U_CONFIRM_PASS">Confirm Password:</label>
+                                  <div class="col-md-8">
+                                      <input class="form-control input-sm" id="U_CONFIRM_PASS" name="U_CONFIRM_PASS" placeholder="Confirm Password" type="password" value="" required>
+                                  </div>
+                              </div>
+                          </div>
 
 
                           <div class="form-group">

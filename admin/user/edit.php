@@ -1,4 +1,6 @@
 <?php  
+
+
       if (!isset($_SESSION['ADMIN_USERID'])){
       redirect(web_root."admin/index.php");
      }
@@ -77,18 +79,19 @@ if (!$connection) {
         <div class="form-group">
             <div class="col-md-8">
                 <label class="col-md-4 control-label" for="U_CONFIRM_PASS">Confirm Password:</label>
-
                 <div class="col-md-8">
                     <input class="form-control input-sm" id="U_CONFIRM_PASS" name="U_CONFIRM_PASS" placeholder="Confirm Password" type="password" value="" required>
                 </div>
             </div>
         </div>
 
+
         <div class="form-group">
             <div class="col-md-8">
                 <label class="col-md-4 control-label" for="U_COMPANY">Company:</label>
                 <div class="col-md-8">
                     <select class="form-control input-sm" name="U_COMPANY" id="U_COMPANY">
+
                         <?php
                 // Query the database to fetch company names
                 $companyQuery = "SELECT `COMPANYID`, `COMPANYNAME` FROM `tblcompany`";

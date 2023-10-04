@@ -98,7 +98,7 @@ if ($stmt) {
     <table id="dash-table" class="table table-striped table-hover table-responsive" style="font-size:12px" cellspacing="0">
         <thead>
             <tr>
-                <th>Applicant</th>
+
                 <th>Job Title</th>
                 <th>Company</th>
                 <th>Applied Date</th>
@@ -110,7 +110,7 @@ if ($stmt) {
             <?php
             while ($row = $result->fetch_assoc()) {
                 echo '<tr>';
-                echo '<td>' . $row['APPLICANT'] . '</td>';
+              
                 echo '<td>' . $row['OCCUPATIONTITLE'] . '</td>';
                 echo '<td>' . $row['COMPANYNAME'] . '</td>';
                 echo '<td>' . $row['REGISTRATIONDATE'] . '</td>';
