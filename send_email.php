@@ -15,15 +15,15 @@ function sendVerificationEmail($recipientEmail, $verificationCode) {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com'; // Specify your SMTP server
         $mail->SMTPAuth = true;
-        $mail->Username = 'sujalbhavsar22@gmail.com'; // SMTP username
+        $mail->Username = example@gmail.com'; // SMTP username
         $mail->Password = 'totwyatuerralwfc'; // SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
         // Recipients
-        $mail->setFrom('sujalbhavsar22@gmail.com', 'Personallocalhost'); // Sender's email and name
+        $mail->setFrom('example@gmail.com', 'Personallocalhost'); // Sender's email and name
         $mail->addAddress($recipientEmail); // Recipient's email
-        $mail->addReplyTo('sujalbhavsar22@gmail.com', 'Personallocalhost'); // Reply-to email and name
+        $mail->addReplyTo('example@gmail.com', 'Personallocalhost'); // Reply-to email and name
 
         // Content
         $verificationLink = "http://localhost/Internship/index.php?q=verify&code={$verificationCode}"; // Use "&" instead of "?"
