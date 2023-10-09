@@ -141,9 +141,14 @@ global $mydb;
             </p>
         </div>
         <div class="col-sm-12">
-            <p>Feedback</p>
-            <textarea class="input-group" name="REMARKS"><?php echo isset($jobreg->REMARKS) ? $jobreg->REMARKS : ""; ?></textarea>
+            <label for="remarks">Feedback</label>
+            <select class="form-control" name="REMARKS">
+                <option value="Pending" <?php echo (isset($jobreg->REMARKS) && $jobreg->REMARKS === 'Pending') ? 'selected' : ''; ?>>Pending</option>
+                <option value="In Progress" <?php echo (isset($jobreg->REMARKS) && $jobreg->REMARKS === 'In Progress') ? 'selected' : ''; ?>>In Progress</option>
+                <option value="Approved" <?php echo (isset($jobreg->REMARKS) && $jobreg->REMARKS === 'Approved') ? 'selected' : ''; ?>>Approved</option>
+            </select>
         </div>
+
         <div class="col-sm-12  submitbutton ">
             <button type="submit" name="submit" class="btn btn-primary">Send</button>
         </div>

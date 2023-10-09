@@ -21,6 +21,36 @@ function executeSQL($sql) {
     return $result;
 }
 
+// Query for Hired Students Section
+// Query for Hired, Pending, and In-Progress Students Section
+$sqlHiringStatus = "SELECT COMPANYID, 
+                            SUM(CASE WHEN remarks = 'approved' THEN 1 ELSE 0 END) AS hired,
+                            SUM(CASE WHEN remarks = 'pending' THEN 1 ELSE 0 END) AS pending,
+                            SUM(CASE WHEN remarks = 'In Progress' THEN 1 ELSE 0 END) AS in_progress
+                    FROM tbljobregistration
+                    WHERE remarks IN ('approved', 'pending', 'In Progress')
+                    GROUP BY COMPANYID";
+$resultHiringStatus = executeSQL($sqlHiringStatus);
+
+// Initialize an array to store company data
+$companyData = array();
+
+if ($resultHiringStatus) {
+    while ($rowHiringStatus = $resultHiringStatus->fetch_assoc()) {
+        $companyID = $rowHiringStatus['COMPANYID'];
+        $hired = $rowHiringStatus['hired'];
+        $pending = $rowHiringStatus['pending'];
+        $inProgress = $rowHiringStatus['in_progress'];
+
+        // Store the data in the companyData array
+        $companyData[$companyID] = [
+            'hired' => $hired,
+            'pending' => $pending,
+            'in_progress' => $inProgress,
+        ];
+    }
+}
+
 // Execute SQL queries for data retrieval
 $sqlNewApplicants = "SELECT COUNT(*) AS total FROM tblapplicants";
 $sqlVerifiedUsers = "SELECT COUNT(*) AS total FROM tblapplicants WHERE EMAIL_VERIFIED = 1";
@@ -191,6 +221,19 @@ if ($resultHiredStudents) {
             </div>
         </div>
 
+        <!-- Bar Chart for Company Hiring -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Company Hiring Chart</h3>
+                    </div>
+                    <div class="box-body">
+                        <canvas id="companyHiringChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Company Section -->
         <div class="row">
@@ -282,6 +325,78 @@ if ($resultHiredStudents) {
         // Generate and download the report when the button is clicked
 
     </script>
+    <!-- Inside the script tag in your HTML file -->
+    <!-- Inside the script tag in your HTML file -->
+    <script>
+        // JavaScript code for initializing and populating the chart
+
+        // Get data from PHP array
+        var companyData = <?php echo json_encode($companyData); ?>;
+
+        // Create arrays to store labels and data for the chart
+        var companyLabels = [];
+        var hiredCounts = [];
+        var pendingCounts = [];
+        var inProgressCounts = [];
+
+        // Loop through the companyData to populate the arrays
+        for (var companyID in companyData) {
+            if (companyData.hasOwnProperty(companyID)) {
+                // Add the company name (you may fetch it from your database) to labels
+                companyLabels.push("Company " + companyID);
+
+                // Add counts for hired, pending, and in-progress students
+                hiredCounts.push(companyData[companyID]['hired']);
+                pendingCounts.push(companyData[companyID]['pending']);
+                inProgressCounts.push(companyData[companyID]['in_progress']);
+            }
+        }
+
+        // Create a stacked bar chart
+        var ctx = document.getElementById('companyHiringChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: companyLabels,
+                datasets: [{
+                        label: 'Hired',
+                        data: hiredCounts,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Pending',
+                        data: pendingCounts,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'In Progress',
+                        data: inProgressCounts,
+                        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                        borderColor: 'rgba(255, 206, 86, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        stacked: true
+                    },
+                    x: {
+                        stacked: true
+                    }
+                }
+            }
+        });
+
+    </script>
+
+
 </body>
 
 </html>

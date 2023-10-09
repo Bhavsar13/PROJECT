@@ -1,33 +1,31 @@
-<?php 
-require_once("../include/initialize.php");  
-if (!isset($_SESSION['APPLICANTID'])) {
-	# code...
-	redirect(web_root.'index.php');
+<?php
+require_once("../../include/initialize.php");
+ if(!isset($_SESSION['ADMIN_USERID'])){
+	redirect(web_root."admin/index.php");
 }
+
 $view = (isset($_GET['view']) && $_GET['view'] != '') ? $_GET['view'] : '';
-switch ($view) { 
-	case 'appliedjobs' :
-	    $title="Profile";	
-        $_SESSION['appliedjobs']	='active' ; 
-		$content ='Profile.php';
+ $title="Applicants"; 
+ $header=$view; 
+switch ($view) {
+	case 'list' :
+		$content    = 'list.php';		
 		break;
 
-	case 'notification' :
-	    $title="Profile";	
-        $_SESSION['notification']	='active' ; 
-		$content ='Profile.php';
+	case 'add' :
+		$content    = 'add.php';		
 		break;
-  
-	case 'accounts' : 
-	    $title="Profile";	
-        $_SESSION['accounts']	='active' ;
-        $content ='Profile.php';
+
+	case 'edit' :
+		$content    = 'edit.php';		
 		break;
-	 
-	default : 
-	    $title="Profile";	
-        $_SESSION['appliedjobs']	='active' ;
-		$content ='Profile.php';		
+    case 'view' :
+		$content    = 'view.php';		
+		break;
+
+	default :
+		$content    = 'list.php';		
 }
-require_once("../theme/template.php");
+require_once ("../theme/templates.php");
 ?>
+  
