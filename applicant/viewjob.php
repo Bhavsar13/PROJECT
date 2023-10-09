@@ -78,7 +78,18 @@ global $mydb;
         <div class="col-sm-6">
             <ul>
                 <li><i class="fp-ht-bed"></i>Required No. of Employee's : <?php echo $job->REQ_NO_EMPLOYEES; ?></li>
-                <li><i class="fp-ht-food"></i>Salary: <?php echo number_format(floatval($result->SALARIES), 2); ?></li>
+                <?php
+$salary = isset($job->SALARIES) ? $job->SALARIES : null;
+
+if (is_numeric($salary)) {
+    $formattedSalary = number_format(floatval($salary), 2);
+} else {
+    $formattedSalary = 'N/A';
+}
+
+echo '<li><i class="fp-ht-food"></i>Salary: ' . $formattedSalary . '</li>';
+?>
+
                 <li><i class="fa fa-sun-"></i>Duration of Employment : <?php echo $job->DURATION_EMPLOYEMENT; ?></li>
             </ul>
         </div>
