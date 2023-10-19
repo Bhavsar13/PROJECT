@@ -11,7 +11,7 @@
   <form class="form-horizontal" method="POST" action="controller.php?action=edit">
       <div class="container">
           <div class="box-header with-border">
-              <h3 class="box-title">Account</h3>
+              <h3 class="box-title">Edit Profile</h3>
 
               <!-- /.box-tools -->
           </div>
@@ -20,7 +20,7 @@
                   <label class="col-md-4 control-label" for="FNAME">Firstname:</label>
 
                   <div class="col-md-8">
-                      <input name="JOBID" type="hidden" value="<?php echo $_GET['job'];?>">
+                      <input name="JOBID" type="hidden" value="<?php echo isset ($_GET['job'])?$_GET['job']:'';?>">
                       <input class="form-control input-sm" id="FNAME" name="FNAME" placeholder="Firstname" type="text" value="<?php echo $appl->FNAME;?>" onkeyup="javascript:capitalize(this.id, this.value);" autocomplete="off">
                   </div>
               </div>
