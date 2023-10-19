@@ -51,7 +51,7 @@
         ?>
         <div class="col-sm-4 info-blocks">
 
-            <div class="info-blocks-in">
+            <div class="info-blocks">
                 <h3><?php echo $company->COMPANYNAME; ?></h3>
                 <p>Address: <?php echo $company->COMPANYADDRESS; ?></p>
                 <p>Contact No.: <?php echo $company->COMPANYCONTACTNO; ?></p>

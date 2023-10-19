@@ -27,6 +27,7 @@
 
                 <button type="submit" class="btn btn-primary">Verify</button>
             </form>
+
         </div>
     </section>
 </body>

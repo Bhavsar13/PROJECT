@@ -107,7 +107,7 @@ function verifyEmail() {
     } else {
         // Invalid verification code
         message("Invalid verification code. Please check and try again.", "error");
-        redirect("verify.php"); // Replace with the appropriate URL
+        redirect("http://localhost/Internship/index.php?q=verify&code=");// Replace with the appropriate URL
     }
 }
 
