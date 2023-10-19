@@ -96,7 +96,7 @@ if ($stmt) {
     <table id="dash-table" class="table table-striped table-hover table-responsive" style="font-size:12px" cellspacing="0">
         <thead>
             <tr>
-                <th>Job ID</th>
+                <th>Intern ID</th>
                 <th>Company Name</th>
                 <th>Occupation Title</th>
                 <th>Require no. of Employees</th>

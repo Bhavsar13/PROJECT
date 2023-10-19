@@ -99,7 +99,7 @@ if ($stmt) {
         <thead>
             <tr>
 
-                <th>Job Title</th>
+                <th>Internship Title</th>
                 <th>Company</th>
                 <th>Applied Date</th>
                 <th>Remarks</th>

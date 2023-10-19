@@ -146,6 +146,7 @@
             <section class="sidebar">
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu">
+
                     <li class="<?php echo (currentpage() == 'index.php') ? "active" : false;?>">
                         <a href="<?php echo web_root ;?>admin/">
                             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
