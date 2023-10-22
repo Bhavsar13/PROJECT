@@ -65,7 +65,7 @@ echo '<li><i class="fp-ht-food"></i>Salary: ' . $formattedSalary . '</li>';
                                         </ul>
                                     </div>
                                     <div class="col-sm-12">
-                                        <p>Job Description:</p>
+                                        <p>Internship Description:</p>
                                         <ul style="list-style: none;">
                                             <li><?php echo $result->JOBDESCRIPTION ;?></li>
                                         </ul>
