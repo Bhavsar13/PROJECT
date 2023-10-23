@@ -4,7 +4,7 @@ Operating systems: Windows or macOS
 XAMPP installed with Apache version 2.4.52 and PHP version 7.4.28. 
 Installation Steps: 
 1. Downloading the Project Files: 
-Visit [provide link] to download the project files. 
+ 
 Save the downloaded file to your local machine. 
 2. Extracting Zip Files: 
 Locate the downloaded zip file and extract it to your XAMPP htdocs directory. 
@@ -75,3 +75,20 @@ You should now see the internship portal homepage.
 Test the functionality to ensure there are no errors. 
 Troubleshooting: If you encounter any issues during installation, please refer to the troubleshooting section in the full installation guide for solutions to common problems. 
 Conclusion: Congratulations! You have successfully installed internship portal on your XAMPP localhost, which works on both Windows and macOS. If you have any questions or need further assistance, please don't hesitate to reach out. 
+Admin Login Credentials: 
+
+Username: admin 
+
+Password: admin@123 
+
+Candidate Login:  
+
+Username: abc 
+
+Password: 1Zabc@123 
+
+Host Company Login: 
+
+Username: veer 
+
+Password: 1Zveer@123 
