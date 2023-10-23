@@ -4,7 +4,6 @@ Operating systems: Windows or macOS
 XAMPP installed with Apache version 2.4.52 and PHP version 7.4.28. 
 Installation Steps: 
 1. Downloading the Project Files: 
- 
 Save the downloaded file to your local machine. 
 2. Extracting Zip Files: 
 Locate the downloaded zip file and extract it to your XAMPP htdocs directory. 
